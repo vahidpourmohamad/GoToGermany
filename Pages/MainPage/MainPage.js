@@ -13,8 +13,10 @@ import {
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet,  View, ImageBackground } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
+import { useFonts } from "expo-font";
 const img = require("../../assets/test.png");
 const MainPage =  ({ navigation, route })=> {
+
   return (
     <ImageBackground
       style={styles.image}
@@ -32,7 +34,7 @@ const MainPage =  ({ navigation, route })=> {
                   وحید پورمحمد
                 </Text>
                 <Text fontFamily="body" fontSize="14">
-                  مارکت نگین
+                   نگین
                 </Text>
                 <Text fontFamily="light" fontSize="12">
                   محله وکیل آباد
@@ -58,7 +60,7 @@ const MainPage =  ({ navigation, route })=> {
                 bg="violet.900"
                 icon={<AntDesign name="tago" size={24} color="white" />}
               />
-              <Text mt={2} ontFamily="body" fontSize="14">
+              <Text mt={2} fontFamily="body" fontSize="14">
                 محصولات
               </Text>
             </Center>
@@ -68,7 +70,7 @@ const MainPage =  ({ navigation, route })=> {
                 bg="violet.900"
                 icon={<AntDesign name="star" size={24} color="white" />}
               />
-              <Text mt={2} ontFamily="body" fontSize="14">
+              <Text mt={2} fontFamily="body" fontSize="14">
                 با تخفیف
               </Text>
             </Center>
@@ -78,7 +80,7 @@ const MainPage =  ({ navigation, route })=> {
                 bg="violet.900"
                 icon={<AntDesign name="plus" size={24} color="white" />}
               />
-              <Text mt={2} ontFamily="body" fontSize="14">
+              <Text mt={2} fontFamily="body" fontSize="14">
                 جدیدها
               </Text>
             </Center>
@@ -110,6 +112,10 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
     alignItems: "center",
+    justifyContent: "center",
+  },
+  image: {
+    flex: 1,
     justifyContent: "center",
   },
 });
