@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Box,
   VStack,
@@ -10,12 +10,29 @@ import {
   Text,
   Image,
   Circle,
+  Pressable,
 } from "native-base";
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, View, ImageBackground } from "react-native";
+import {
+  StyleSheet,
+  View,
+  ImageBackground,
+  TouchableOpacity,
+} from "react-native";
 import { AntDesign } from "@expo/vector-icons";
-import { useFonts } from "expo-font";
-const img = require("../../assets/test.png");
+
+import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
+  withTiming,
+  useDerivedValue,
+  interpolate,
+  withRepeat,
+  withSpring,
+} from "react-native-reanimated";
+
+import WordCard from "../../Components/wordCard.js";
+
 const MainPage = ({ navigation, route }) => {
   return (
     <ImageBackground
@@ -101,22 +118,7 @@ const MainPage = ({ navigation, route }) => {
             </Center>
           </HStack>
         </Center>
-        <Center
-          w="80%"
-          h="42%"
-          alignItems="center"
-          bg="white"
-          rounded="29"
-          shadow={9}
-        >
-          <Image
-            source={img}
-            alt={"Alternate Text "}
-            width="100%"
-            height="100%"
-            rounded="29"
-          />
-        </Center>
+        <WordCard />
         <Center
           alignItems="center"
           w="80%"
@@ -154,6 +156,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
   },
+  card: { flex: 1 },
 });
 
 export default MainPage;
