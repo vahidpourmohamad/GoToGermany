@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 import {
   Box,
   VStack,
@@ -9,14 +9,14 @@ import {
   IconButton,
   Text,
   Image,
+  Circle,
 } from "native-base";
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet,  View, ImageBackground } from "react-native";
+import { StyleSheet, View, ImageBackground } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import { useFonts } from "expo-font";
 const img = require("../../assets/test.png");
-const MainPage =  ({ navigation, route })=> {
-
+const MainPage = ({ navigation, route }) => {
   return (
     <ImageBackground
       style={styles.image}
@@ -30,14 +30,20 @@ const MainPage =  ({ navigation, route })=> {
           <HStack w="100%" h="100%">
             <Center w="65%" h="100%">
               <VStack mt={3} h="100%" w="100%" alignItems="flex-end">
-                <Text fontFamily="heading" fontSize="20">
+                <Text
+                  style={{ fontFamily: "IRANSansBold", fontSize: 14 }}
+                  mt={1}
+                >
                   وحید پورمحمد
                 </Text>
-                <Text fontFamily="body" fontSize="14">
-                   نگین
+                <Text
+                  mt={2}
+                  style={{ fontFamily: "IRANSansMedium", fontSize: 14 }}
+                >
+                  تعداد کلمات امروز
                 </Text>
-                <Text fontFamily="light" fontSize="12">
-                  محله وکیل آباد
+                <Text style={{ fontFamily: "IRANSansLight", fontSize: 12 }}>
+                  مرور امروز
                 </Text>
               </VStack>
             </Center>
@@ -58,10 +64,13 @@ const MainPage =  ({ navigation, route })=> {
               <IconButton
                 variant="solid"
                 bg="violet.900"
-                icon={<AntDesign name="tago" size={24} color="white" />}
+                icon={<AntDesign name="left" size={24} color="white" />}
               />
-              <Text mt={2} fontFamily="body" fontSize="14">
-                محصولات
+              <Text
+                mt={2}
+                style={{ fontFamily: "IRANSansMedium", fontSize: 14 }}
+              >
+                قبلی
               </Text>
             </Center>
             <Center w="33%" h="100%">
@@ -70,18 +79,24 @@ const MainPage =  ({ navigation, route })=> {
                 bg="violet.900"
                 icon={<AntDesign name="star" size={24} color="white" />}
               />
-              <Text mt={2} fontFamily="body" fontSize="14">
-                با تخفیف
+              <Text
+                mt={2}
+                style={{ fontFamily: "IRANSansMedium", fontSize: 14 }}
+              >
+                پاسخ
               </Text>
             </Center>
             <Center w="34%" h="100%">
               <IconButton
                 variant="solid"
                 bg="violet.900"
-                icon={<AntDesign name="plus" size={24} color="white" />}
+                icon={<AntDesign name="right" size={24} color="white" />}
               />
-              <Text mt={2} fontFamily="body" fontSize="14">
-                جدیدها
+              <Text
+                mt={2}
+                style={{ fontFamily: "IRANSansMedium", fontSize: 14 }}
+              >
+                بعدی
               </Text>
             </Center>
           </HStack>
@@ -102,11 +117,32 @@ const MainPage =  ({ navigation, route })=> {
             rounded="29"
           />
         </Center>
-        <Center w="80%" h="22%" bg="white" rounded="29" shadow={9} />
+        <Center
+          alignItems="center"
+          w="80%"
+          h="22%"
+          bg="white"
+          rounded="29"
+          shadow={9}
+        >
+          <HStack
+            alignItems="center"
+            justifyContent="space-around"
+            w="100%"
+            h="100%"
+          >
+            <Circle size="120px" bg="red.500">
+              <AntDesign name="close" size={45} color="white" />
+            </Circle>
+            <Circle size="120px" bg="success.500">
+              <AntDesign name="check" size={45} color="white" />
+            </Circle>
+          </HStack>
+        </Center>
       </VStack>
     </ImageBackground>
   );
-}
+};
 const styles = StyleSheet.create({
   container: {
     flex: 1,

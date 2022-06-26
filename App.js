@@ -11,42 +11,43 @@ import MainPage from "./Pages/MainPage/MainPage.js";
 const Stack = createNativeStackNavigator();
 
 
-
-export default function App() {
-  const theme = extendTheme({
-    fontConfig: {
-      IranSans: {
-        100: {
-          normal: "IRANSansRegular",
-        },
-        200: {
-          normal: "IRANSans_UltraLight",
-        },
-        300: {
-          normal: "IRANSans_Light",
-        },
-        400: {
-          normal: "IRANSansRegular",
-        },
-        500: {
-          normal: "IRANSans_Medium",
-        },
-        600: {
-          normal: "IRANSans_Bold",
+    const theme = extendTheme({
+      fontConfig: {
+        IranSans: {
+          100: {
+            normal: "IRANSansRegular",
+          },
+          200: {
+            normal: "IRANSans_UltraLight",
+          },
+          300: {
+            normal: "IRANSans_Light",
+          },
+          400: {
+            normal: "IRANSansRegular",
+          },
+          500: {
+            normal: "IRANSans_Medium",
+          },
+          600: {
+            normal: "IRANSans_Bold",
+          },
         },
       },
-    },
 
-    // Make sure values below matches any of the keys in `fontConfig`
-    fonts: {
-      heading: "IRANSansBold",
-      body: "IRANSansMedium",
-      Regular: "IRANSansRegular",
-      light: "IRANSansLight",
-      Ultralight: "IRANSansUltraLight",
-      mono: "IRANSansRegular",
-    },
-  });
+      // Make sure values below matches any of the keys in `fontConfig`
+      fonts: {
+        heading: "IRANSansBold",
+        body: "IRANSansMedium",
+        Regular: "IRANSansRegular",
+        light: "IRANSansLight",
+        Ultralight: "IRANSansUltraLight",
+        mono: "IRANSansRegular",
+      },
+    });
+
+
+export default function App() {
 
   let [fontsLoaded] = useFonts({
     IRANSansBold: require("./assets/Fonts/IRANSans_Bold.ttf"),
@@ -59,6 +60,7 @@ export default function App() {
   if (!fontsLoaded) {
     return (<AppLoading />);
   }
+
   console.log(theme.fonts);
   return (
     <NativeBaseProvider theme={theme}>
