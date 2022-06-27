@@ -34,6 +34,12 @@ import Animated, {
 function WordCard() {
   const [answerShow, setAnswerShow] = useState(false);
   const animation = useSharedValue(0);
+  const wordGerman = " Tee";
+  const wordPersian = "چای";
+  const plural = "Tees";
+  const wordGender = "Der";
+  const question = "چای";
+
   const cardFlip = useAnimatedStyle(() => {
     return {
       transform: [
@@ -77,19 +83,10 @@ function WordCard() {
             {answerShow ? (
               <VStack mt={3} h="100%" w="100%" alignItems="flex-end">
                 <Text
-                  style={{ fontFamily: "IRANSansBold", fontSize: 14 }}
+                  style={{ fontFamily: "IRANSansBold", fontSize: 30 }}
                   mt={1}
                 >
-                  وحید پورمحمد
-                </Text>
-                <Text
-                  mt={2}
-                  style={{ fontFamily: "IRANSansMedium", fontSize: 14 }}
-                >
-                  تعداد کلمات امروز
-                </Text>
-                <Text style={{ fontFamily: "IRANSansLight", fontSize: 12 }}>
-                  مرور امروز
+                  {question}
                 </Text>
               </VStack>
             ) : (
@@ -97,15 +94,26 @@ function WordCard() {
                 <Text
                   style={{ fontFamily: "IRANSansBold", fontSize: 14 }}
                   mt={1}
-                >adasda</Text>
-                <Text
-                  mt={2}
-                  style={{ fontFamily: "IRANSansMedium", fontSize: 14 }}
                 >
-                  تعداد کلمات امروز
+                  {wordGender}
                 </Text>
-                <Text style={{ fontFamily: "IRANSansLight", fontSize: 12 }}>
-                  مرور امروز
+                <Text
+                  style={{ fontFamily: "IRANSansBold", fontSize: 14 }}
+                  mt={1}
+                >
+                  {wordGerman}
+                </Text>
+                <Text
+                  style={{ fontFamily: "IRANSansBold", fontSize: 14 }}
+                  mt={1}
+                >
+                  {wordPersian}
+                </Text>
+                <Text
+                  style={{ fontFamily: "IRANSansBold", fontSize: 14 }}
+                  mt={1}
+                >
+                  {plural}
                 </Text>
               </VStack>
             )}
