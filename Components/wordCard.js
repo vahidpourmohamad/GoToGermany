@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React from "react";
+import { useState } from "react";
 import {
   Box,
   VStack,
@@ -7,7 +8,6 @@ import {
   Avatar,
   extendTheme,
   IconButton,
-  Text,
   Image,
   Circle,
   Pressable,
@@ -18,6 +18,7 @@ import {
   View,
   ImageBackground,
   TouchableOpacity,
+  Text,
 } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 
@@ -74,6 +75,8 @@ function WordCard() {
         w="80%"
         h="42%"
         alignItems="center"
+        alignContent="center"
+        justifyItems="center"
         bg="white"
         rounded="29"
         shadow={9}
@@ -81,41 +84,68 @@ function WordCard() {
         <Pressable onPress={flipCard}>
           <Animated.View style={cardFlip}>
             {answerShow ? (
-              <VStack mt={3} h="100%" w="100%" alignItems="flex-end">
-                <Text
-                  style={{ fontFamily: "IRANSansBold", fontSize: 30 }}
-                  mt={1}
-                >
-                  {question}
-                </Text>
-              </VStack>
+              <Text style={{ fontFamily: "IRANSansBold", fontSize: 40 }}>
+                {question}
+              </Text>
             ) : (
-              <VStack mt={3} h="100%" w="100%" alignItems="flex-end">
-                <Text
-                  style={{ fontFamily: "IRANSansBold", fontSize: 14 }}
-                  mt={1}
-                >
-                  {wordGender}
-                </Text>
-                <Text
-                  style={{ fontFamily: "IRANSansBold", fontSize: 14 }}
-                  mt={1}
-                >
-                  {wordGerman}
-                </Text>
-                <Text
-                  style={{ fontFamily: "IRANSansBold", fontSize: 14 }}
-                  mt={1}
-                >
-                  {wordPersian}
-                </Text>
-                <Text
-                  style={{ fontFamily: "IRANSansBold", fontSize: 14 }}
-                  mt={1}
-                >
-                  {plural}
-                </Text>
-              </VStack>
+              <View style={styles.container}>
+                <View style={styles.wordRow}>
+                  <Text
+                    style={{ fontFamily: "IRANSansBold", fontSize: 30 }}
+                    mt={1}
+                  >
+                    {wordGender + " "}
+                  </Text>
+                  <Text
+                    style={{ fontFamily: "IRANSansBold", fontSize: 22 }}
+                    mt={1}
+                  >
+                    جنسیت :
+                  </Text>
+                </View>
+                <View style={styles.wordRow}>
+                  <Text
+                    style={{ fontFamily: "IRANSansBold", fontSize: 30 }}
+                    mt={1}
+                  >
+                    {wordGerman + " "}
+                  </Text>
+                  <Text
+                    style={{ fontFamily: "IRANSansBold", fontSize: 22 }}
+                    mt={1}
+                  >
+                    اسم آلمانی :
+                  </Text>
+                </View>
+                <View style={styles.wordRow}>
+                  <Text
+                    style={{ fontFamily: "IRANSansBold", fontSize: 30 }}
+                    mt={1}
+                  >
+                    {wordPersian + " "}
+                  </Text>
+                  <Text
+                    style={{ fontFamily: "IRANSansBold", fontSize: 22 }}
+                    mt={1}
+                  >
+                    معنی اسم :
+                  </Text>
+                </View>
+                <View style={styles.wordRow}>
+                  <Text
+                    style={{ fontFamily: "IRANSansBold", fontSize: 30 }}
+                    mt={1}
+                  >
+                    {plural + " "}
+                  </Text>
+                  <Text
+                    style={{ fontFamily: "IRANSansBold", fontSize: 22 }}
+                    mt={1}
+                  >
+                    شکل جمع :
+                  </Text>
+                </View>
+              </View>
             )}
           </Animated.View>
         </Pressable>
@@ -124,4 +154,26 @@ function WordCard() {
   );
 }
 
+const styles = StyleSheet.create({
+  container: {
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "space-around",
+    height: "100%",
+    width: "100%",
+    // justifyItems: "space-between",
+  },
+  wordRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    justifyItems: "space-between",
+    width: "70%",
+  },
+  image: {
+    flex: 1,
+    justifyContent: "center",
+  },
+  card: { flex: 1 },
+});
 export default WordCard;
