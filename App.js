@@ -7,7 +7,8 @@ import { NativeBaseProvider, extendTheme } from "native-base";
 import { useFonts } from "expo-font";
 import AppLoading from "expo-app-loading";
 import MainPage from "./Pages/MainPage/MainPage.js";
-
+import ErrorBoundary from "./Helper/ErrorBoundry.js";
+import { AppContextProvider } from "./Helper/appContextProvider";
 ///Apollo Client Setup
 
 import {
@@ -20,6 +21,7 @@ import {
 import { createUploadLink } from "apollo-upload-client";
 import { setContext } from "@apollo/client/link/context";
 import { ErrorLink, onError, OnError } from "@apollo/client/link/error";
+import { AuthProvider } from "./Helper/AuthContext.js";
 
 const errorLink = onError(({ graphqlErrors, networkErrors }) => {
   if (networkErrors) {
@@ -108,20 +110,23 @@ export default function App() {
     return <AppLoading />;
   }
 
-  console.log(theme.fonts);
   return (
-    <ApolloProvider client={client}>
-      <NativeBaseProvider theme={theme}>
-        <NavigationContainer>
-          <Stack.Navigator
-            screenOptions={{
-              headerShown: false,
-            }}
-          >
-            <Stack.Screen name="Main" component={MainPage} />
-          </Stack.Navigator>
-        </NavigationContainer>
-      </NativeBaseProvider>
-    </ApolloProvider>
+    <AppContextProvider>
+      <ApolloProvider client={client}>
+        <ErrorBoundary>
+          <NativeBaseProvider theme={theme}>
+            <NavigationContainer>
+              <Stack.Navigator
+                screenOptions={{
+                  headerShown: false,
+                }}
+              >
+                <Stack.Screen name="Main" component={MainPage} />
+              </Stack.Navigator>
+            </NavigationContainer>
+          </NativeBaseProvider>
+        </ErrorBoundary>
+      </ApolloProvider>
+    </AppContextProvider>
   );
 }

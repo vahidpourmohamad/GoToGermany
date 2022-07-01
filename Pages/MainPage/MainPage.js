@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import {
   Box,
   VStack,
@@ -32,8 +32,11 @@ import Animated, {
 } from "react-native-reanimated";
 
 import WordCard from "../../Components/wordCard.js";
+import { AuthContext } from "../../Helper/AuthContext.js";
 
 const MainPage = ({ navigation, route }) => {
+  const { userName, userId } = useContext(AuthContext);
+
   return (
     <ImageBackground
       style={styles.image}
@@ -51,7 +54,7 @@ const MainPage = ({ navigation, route }) => {
                   style={{ fontFamily: "IRANSansBold", fontSize: 14 }}
                   mt={1}
                 >
-                  وحید پورمحمد
+                  {userName}
                 </Text>
                 <Text
                   mt={2}
@@ -123,7 +126,7 @@ const MainPage = ({ navigation, route }) => {
           <HStack
             alignItems="center"
             justifyContent="space-around"
-            w="100%"
+            w="80%"
             h="100%"
           >
             <Circle size="120px" bg="red.500">
