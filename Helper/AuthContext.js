@@ -3,11 +3,12 @@ import React from "react";
 
 export default function AuthProvider(props) {
   const [state, dispatch] = useReducer(authReducer, initialState);
-  console.log(initialState);
+  // console.log(initialState);
   const login = (userData) => {
     //  localStorage.setItem("token", userData.token);
-    console.log("test");
+    console.log(userData);
     dispatch({ type: "LOGIN", payload: userData });
+    console.log(state);
   };
 
   function logout() {
