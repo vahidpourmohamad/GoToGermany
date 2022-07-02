@@ -22,6 +22,7 @@ import { createUploadLink } from "apollo-upload-client";
 import { setContext } from "@apollo/client/link/context";
 import { ErrorLink, onError, OnError } from "@apollo/client/link/error";
 import { AuthProvider } from "./Helper/AuthContext.js";
+import Login from "./Pages/Login/Login.js";
 
 const errorLink = onError(({ graphqlErrors, networkErrors }) => {
   if (networkErrors) {
@@ -111,8 +112,8 @@ export default function App() {
   }
 
   return (
-    <AppContextProvider>
-      <ApolloProvider client={client}>
+    <ApolloProvider client={client}>
+      <AppContextProvider>
         <ErrorBoundary>
           <NativeBaseProvider theme={theme}>
             <NavigationContainer>
@@ -121,12 +122,13 @@ export default function App() {
                   headerShown: false,
                 }}
               >
+                <Stack.Screen name="Login" component={Login} />
                 <Stack.Screen name="Main" component={MainPage} />
               </Stack.Navigator>
             </NavigationContainer>
           </NativeBaseProvider>
         </ErrorBoundary>
-      </ApolloProvider>
-    </AppContextProvider>
+      </AppContextProvider>
+    </ApolloProvider>
   );
 }
