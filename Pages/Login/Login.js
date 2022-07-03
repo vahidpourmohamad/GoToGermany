@@ -13,14 +13,31 @@ import {
   Input,
 } from "native-base";
 import { AuthContext } from "../../Helper/AuthContext";
+import { useMutation } from "@apollo/client";
 
 export default function Login() {
-  const [userName, setUserName] = useState();
-  const [password, setPassword] = useState();
-  const { contextUserId, contextUserName, login } = useContext(AuthContext);
+  const [inputs, setInputs] = useState();
+  // const [password, setPassword] = useState();
+  const { login } = useContext(AuthContext);
+
+  const [loginUser, { loading }] = useMutation(loginGQL, {
+    update(proxy, { data: { login: userData } }) {
+      login(userData);
+      navigate("/");
+    },
+    onError({ graphQLErrors }) {
+      setErrors(graphQLErrors);
+    },
+    variables: { username: inputs.userName, password: inputs.password },
+  });
+
   const loginButtonClick = () => {
-    login({ userID: "1", userName: userName });
+    loginUser();
+    // login({ userID: "1", userName: userName });
     // console.log(contextUserName);
+  };
+  onChangeHandler = (name, value) => {
+    setInputs({ [name]: value });
   };
   return (
     <ImageBackground
@@ -58,7 +75,7 @@ export default function Login() {
                 نام کاربری
               </FormControl.Label>
               <Input
-                onChangeText={(text) => setUserName(text)}
+                onChangeText={(text) => onChangeHandler(userName, text)}
                 style={{ fontFamily: "IRANSansBold", fontSize: 14 }}
               />
             </FormControl>
@@ -69,7 +86,7 @@ export default function Login() {
               <Input
                 style={{ fontFamily: "IRANSansBold", fontSize: 14 }}
                 type="password"
-                onChangeText={(text) => setPassword(text)}
+                onChangeText={(text) => onChangeHandler(password, text)}
               />
               <Link
                 _text={{

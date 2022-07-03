@@ -24,13 +24,13 @@ export default function AuthProvider(props) {
 }
 
 const initialState = {
-  userId: "test",
-  userName: "test",
+  userId: null,
+  userName: null,
 };
 
 const AuthContext = createContext({
-  userId: "test",
-  userName: "test",
+  userId: null,
+  userName: null,
   login: (userData) => {},
   logout: () => {},
 });
