@@ -14,6 +14,7 @@ import {
 } from "native-base";
 import { AuthContext } from "../../Helper/AuthContext";
 import { useMutation } from "@apollo/client";
+import { loginGQL } from "../../Graphql/Mutation/mutation";
 
 export default function Login() {
   const [inputs, setInputs] = useState();
