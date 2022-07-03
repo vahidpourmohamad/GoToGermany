@@ -51,7 +51,7 @@ const authlink = setContext((_, { headers }) => {
 const link = from([
   errorLink,
   //  new HttpLink({ uri: "http://127.0.0.1:10000" }),
-  createUploadLink({ uri: "http://localhost:10000/graphql" }),
+  createUploadLink({ uri: "https://actually-wood-fright.glitch.me/graphql" }),
 ]);
 
 const client = new ApolloClient({
