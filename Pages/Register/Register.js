@@ -13,14 +13,17 @@ import {
   Input,
 } from "native-base";
 import { AuthContext } from "../../Helper/AuthContext";
-import { useMutation } from "@apollo/client";
-import { loginGQL } from "../../Graphql/Mutation/mutation";
 
-export default function Login({ navigation, route }) {
-  const [inputs, setInputs] = useState({ userName: "", password: "" });
+export default function Register() {
+  const [inputs, setInputs] = useState({
+    username: "",
+    password: "",
+    confirmPassword: "",
+    email: "",
+  });
+  const [errors, setErrors] = useState([]);
   const { login } = useContext(AuthContext);
 
-  const loginButtonClick = () => {};
   const onChangeHandler = (name, value) => {
     setInputs({ ...inputs, [name]: value });
     //console.log(inputs);
@@ -40,7 +43,7 @@ export default function Login({ navigation, route }) {
             style={{ fontFamily: "IRANSansBold", fontSize: 26 }}
             alignSelf="Center"
           >
-            خوش آمدید
+            به اپلیکیشن بریم آلمان خوش آمدید
           </Text>
           <Text
             mt="1"
@@ -52,7 +55,7 @@ export default function Login({ navigation, route }) {
             size="xs"
             style={{ fontFamily: "IRANSansMedium", fontSize: 12 }}
           >
-            وارد شوید
+            ثبت نام کنید
           </Text>
 
           <VStack space={3} mt="5">
@@ -61,8 +64,16 @@ export default function Login({ navigation, route }) {
                 نام کاربری
               </FormControl.Label>
               <Input
-                onChangeText={(text) => onChangeHandler("userName", text)}
+                onChangeText={(text) => onChangeHandler("username", text)}
                 style={{ fontFamily: "IRANSansBold", fontSize: 14 }}
+              />
+            </FormControl>
+            <FormControl>
+              <FormControl.Label alignSelf="flex-end">ایمیل</FormControl.Label>
+              <Input
+                style={{ fontFamily: "IRANSansBold", fontSize: 14 }}
+                type="text"
+                onChangeText={(text) => onChangeHandler("email", text)}
               />
             </FormControl>
             <FormControl>
@@ -74,55 +85,33 @@ export default function Login({ navigation, route }) {
                 type="text"
                 onChangeText={(text) => onChangeHandler("password", text)}
               />
-              <Link
-                _text={{
-                  fontSize: "xs",
-                  fontWeight: "500",
-                  color: "indigo.500",
-                  style: { fontFamily: "IRANSansBold", fontSize: 12 },
-                }}
-                alignSelf="flex-end"
-                mt="1"
-              >
-                فراموشی کلمه عبور
-              </Link>
+            </FormControl>
+            <FormControl>
+              <FormControl.Label alignSelf="flex-end">
+                تکرار کلمه
+              </FormControl.Label>
+              <Input
+                style={{ fontFamily: "IRANSansBold", fontSize: 14 }}
+                type="text"
+                onChangeText={(text) =>
+                  onChangeHandler("passwordConfirm", text)
+                }
+              />
             </FormControl>
             <Button
               _text={{ style: { fontFamily: "IRANSansBold", fontSize: 12 } }}
               mt="2"
               colorScheme="indigo"
-              onPress={loginButtonClick}
+              onPress={registerUser}
             >
-              ورود
+              ثبت نام
             </Button>
-            <HStack mt="6" justifyContent="center">
-              <Text
-                fontSize="sm"
-                color="coolGray.600"
-                _dark={{
-                  color: "warmGray.200",
-                }}
-              >
-                من یک کاربر جدید هستم
-              </Text>
-              <Link
-                _text={{
-                  color: "indigo.500",
-                  fontWeight: "medium",
-                  fontSize: "sm",
-                }}
-                onPress={() => navigation.navigate("Register")}
-              >
-                ثبت نام
-              </Link>
-            </HStack>
           </VStack>
         </Box>
       </Center>
     </ImageBackground>
   );
 }
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,

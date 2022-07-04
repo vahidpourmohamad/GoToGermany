@@ -11,55 +11,9 @@ import ErrorBoundary from "./Helper/ErrorBoundry.js";
 import { AppContextProvider } from "./Helper/appContextProvider";
 ///Apollo Client Setup
 
-import {
-  ApolloClient,
-  InMemoryCache,
-  ApolloProvider,
-  HttpLink,
-  from,
-} from "@apollo/client";
-import { createUploadLink } from "apollo-upload-client";
-import { setContext } from "@apollo/client/link/context";
-import { ErrorLink, onError, OnError } from "@apollo/client/link/error";
 import { AuthProvider } from "./Helper/AuthContext.js";
 import Login from "./Pages/Login/Login.js";
-
-const errorLink = onError(({ graphqlErrors, networkErrors }) => {
-  if (networkErrors) {
-    networkErrors.map(({ message, location, path }) => {
-      console.log(`Graphql Error ${message} ${location} ${path}`);
-      alert(`Graphql Error ${message} ${location} ${path}`);
-    });
-  }
-  if (graphqlErrors) {
-    graphqlErrors.map(({ message, location, path }) => {
-      console.log(`Graphql Error ${message} ${location} ${path}`);
-      alert(`Graphql Error ${message} ${location} ${path}`);
-    });
-  }
-});
-
-const authlink = setContext((_, { headers }) => {
-  return {
-    headers: {
-      ...headers,
-      authorization: localStorage.getItem("token") || "",
-    },
-  };
-});
-
-const link = from([
-  errorLink,
-  //  new HttpLink({ uri: "http://127.0.0.1:10000" }),
-  createUploadLink({ uri: "https://actually-wood-fright.glitch.me/graphql" }),
-]);
-
-const client = new ApolloClient({
-  cache: new InMemoryCache(),
-  link: authlink.concat(link),
-});
-
-///
+import Register from "./Pages/Register/Register.js";
 
 const Stack = createNativeStackNavigator();
 
@@ -112,23 +66,22 @@ export default function App() {
   }
 
   return (
-    <ApolloProvider client={client}>
-      <AppContextProvider>
-        <ErrorBoundary>
-          <NativeBaseProvider theme={theme}>
-            <NavigationContainer>
-              <Stack.Navigator
-                screenOptions={{
-                  headerShown: false,
-                }}
-              >
-                <Stack.Screen name="Login" component={Login} />
-                <Stack.Screen name="Main" component={MainPage} />
-              </Stack.Navigator>
-            </NavigationContainer>
-          </NativeBaseProvider>
-        </ErrorBoundary>
-      </AppContextProvider>
-    </ApolloProvider>
+    <AppContextProvider>
+      <ErrorBoundary>
+        <NativeBaseProvider theme={theme}>
+          <NavigationContainer>
+            <Stack.Navigator
+              screenOptions={{
+                headerShown: false,
+              }}
+            >
+              <Stack.Screen name="Login" component={Login} />
+              <Stack.Screen name="Main" component={MainPage} />
+              <Stack.Screen name="Register" component={Register} />
+            </Stack.Navigator>
+          </NavigationContainer>
+        </NativeBaseProvider>
+      </ErrorBoundary>
+    </AppContextProvider>
   );
 }
