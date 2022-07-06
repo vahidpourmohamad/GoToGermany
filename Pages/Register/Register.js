@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View, ImageBackground } from "react-native";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   Center,
   Box,
@@ -13,21 +13,43 @@ import {
   Input,
 } from "native-base";
 import { AuthContext } from "../../Helper/AuthContext";
+// import useAxios from "../../Helper/Hooks/useAxiosFetchData";
+import useAxiosSetData from "../../Helper/Hooks/useAxiosSetData";
 
 export default function Register() {
   const [inputs, setInputs] = useState({
     username: "",
-    password: "",
-    confirmPassword: "",
-    email: "",
+    mobileNumber: "",
   });
+
   const [errors, setErrors] = useState([]);
   const { login } = useContext(AuthContext);
 
   const onChangeHandler = (name, value) => {
     setInputs({ ...inputs, [name]: value });
-    //console.log(inputs);
   };
+
+  const { response, loading, error, sendData } = useAxiosSetData({
+    method: "post",
+    url: "/userRegister",
+    headers: JSON.stringify({ accept: "*/*" }),
+    body: JSON.stringify({
+      name: inputs.username,
+      telephone: inputs.mobileNumber,
+      creationDate: new Date().toLocaleString() + "",
+      paymentStatus: true,
+      applicationVersion: "0.1.0",
+      gender: true,
+      profilePhoto: "https://api.multiavatar.com/" + inputs.username,
+    }),
+  });
+  useEffect(() => {
+    console.log(response);
+    if (response !== null) {
+      console.log("data inserted");
+    }
+  }, [response]);
+
   return (
     <ImageBackground
       style={styles.image}
@@ -61,7 +83,7 @@ export default function Register() {
           <VStack space={3} mt="5">
             <FormControl>
               <FormControl.Label alignSelf="flex-end">
-                نام کاربری
+                نام شما
               </FormControl.Label>
               <Input
                 onChangeText={(text) => onChangeHandler("username", text)}
@@ -69,40 +91,21 @@ export default function Register() {
               />
             </FormControl>
             <FormControl>
-              <FormControl.Label alignSelf="flex-end">ایمیل</FormControl.Label>
-              <Input
-                style={{ fontFamily: "IRANSansBold", fontSize: 14 }}
-                type="text"
-                onChangeText={(text) => onChangeHandler("email", text)}
-              />
-            </FormControl>
-            <FormControl>
               <FormControl.Label alignSelf="flex-end">
-                کلمه عبور
+                شماره همراه
               </FormControl.Label>
               <Input
                 style={{ fontFamily: "IRANSansBold", fontSize: 14 }}
                 type="text"
-                onChangeText={(text) => onChangeHandler("password", text)}
+                onChangeText={(text) => onChangeHandler("mobileNumber", text)}
               />
             </FormControl>
-            <FormControl>
-              <FormControl.Label alignSelf="flex-end">
-                تکرار کلمه
-              </FormControl.Label>
-              <Input
-                style={{ fontFamily: "IRANSansBold", fontSize: 14 }}
-                type="text"
-                onChangeText={(text) =>
-                  onChangeHandler("passwordConfirm", text)
-                }
-              />
-            </FormControl>
+
             <Button
               _text={{ style: { fontFamily: "IRANSansBold", fontSize: 12 } }}
               mt="2"
               colorScheme="indigo"
-              onPress={registerUser}
+              onPress={sendData}
             >
               ثبت نام
             </Button>

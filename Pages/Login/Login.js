@@ -13,10 +13,9 @@ import {
   Input,
 } from "native-base";
 import { AuthContext } from "../../Helper/AuthContext";
-import { useMutation } from "@apollo/client";
-import { loginGQL } from "../../Graphql/Mutation/mutation";
 
-export default function Login({ navigation, route }) {
+export default function Login(props) {
+  const { navigation, route } = props;
   const [inputs, setInputs] = useState({ userName: "", password: "" });
   const { login } = useContext(AuthContext);
 
@@ -40,7 +39,7 @@ export default function Login({ navigation, route }) {
             style={{ fontFamily: "IRANSansBold", fontSize: 26 }}
             alignSelf="Center"
           >
-            خوش آمدید
+            آمدید
           </Text>
           <Text
             mt="1"
