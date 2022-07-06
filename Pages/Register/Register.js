@@ -16,7 +16,8 @@ import { AuthContext } from "../../Helper/AuthContext";
 // import useAxios from "../../Helper/Hooks/useAxiosFetchData";
 import useAxiosSetData from "../../Helper/Hooks/useAxiosSetData";
 
-export default function Register() {
+export default function Register(props) {
+  const { navigation, route } = props;
   const [inputs, setInputs] = useState({
     username: "",
     mobileNumber: "",
@@ -44,9 +45,15 @@ export default function Register() {
     }),
   });
   useEffect(() => {
-    console.log(response);
     if (response !== null) {
-      console.log("data inserted");
+      login({
+        userId: response._id,
+        userName: inputs.username,
+        userPhone: inputs.mobileNumber,
+        userAvatar: "https://api.multiavatar.com/" + inputs.username,
+        userGender: false,
+      });
+      navigation.replace("Main");
     }
   }, [response]);
 

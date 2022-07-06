@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View, ImageBackground } from "react-native";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   Center,
   Box,
@@ -13,16 +13,59 @@ import {
   Input,
 } from "native-base";
 import { AuthContext } from "../../Helper/AuthContext";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function Login(props) {
   const { navigation, route } = props;
+  // console.log(props);
+
   const [inputs, setInputs] = useState({ userName: "", password: "" });
   const { login } = useContext(AuthContext);
+  const [userData, setUserData] = useState();
+  const [newUser, setNewUser] = useState(false);
+
+  const getData = async () => {
+    try {
+      console.log("1");
+
+      let userId = await AsyncStorage.getItem("@userId");
+      let userName = await AsyncStorage.getItem("@userName");
+      let userPhone = await AsyncStorage.getItem("@userPhone");
+      let userAvatar = await AsyncStorage.getItem("@userAvatar");
+      let userGender = await AsyncStorage.getItem("@userGender");
+      console.log("2");
+      console.log(userGender);
+
+      if (userGender !== null) {
+        console.log("4");
+        const loadedUserData = {
+          userId,
+          userName,
+          userPhone,
+          userAvatar,
+          userGender,
+        };
+        console.log(loadedUserData);
+
+        login(loadedUserData);
+        navigation.replace("Main");
+        setNewUser(false);
+      } else {
+        console.log("3");
+        setNewUser(true);
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  useEffect(() => {
+    getData();
+  }, []);
 
   const loginButtonClick = () => {};
   const onChangeHandler = (name, value) => {
     setInputs({ ...inputs, [name]: value });
-    //console.log(inputs);
   };
   return (
     <ImageBackground
@@ -110,7 +153,7 @@ export default function Login(props) {
                   fontWeight: "medium",
                   fontSize: "sm",
                 }}
-                onPress={() => navigation.navigate("Register")}
+                onPress={() => navigation.replace("Register")}
               >
                 ثبت نام
               </Link>

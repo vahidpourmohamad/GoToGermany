@@ -1,42 +1,23 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import {
-  Box,
   VStack,
   Center,
   HStack,
   Avatar,
-  extendTheme,
   IconButton,
   Text,
-  Image,
   Circle,
-  Pressable,
 } from "native-base";
-import { StatusBar } from "expo-status-bar";
-import {
-  StyleSheet,
-  View,
-  ImageBackground,
-  TouchableOpacity,
-} from "react-native";
+import { StyleSheet, View, ImageBackground } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
-
-import Animated, {
-  useSharedValue,
-  useAnimatedStyle,
-  withTiming,
-  useDerivedValue,
-  interpolate,
-  withRepeat,
-  withSpring,
-} from "react-native-reanimated";
-
 import WordCard from "../../Components/wordCard.js";
 import { AuthContext } from "../../Helper/AuthContext.js";
-
 const MainPage = ({ navigation, route }) => {
-  const { userName, userId } = useContext(AuthContext);
-
+  const { userName, userId, userAvatar, userPhone, userGender } =
+    useContext(AuthContext);
+  useEffect(() => {
+    return () => {};
+  }, []);
   return (
     <ImageBackground
       style={styles.image}
@@ -72,7 +53,7 @@ const MainPage = ({ navigation, route }) => {
                 bg="green.500"
                 size="lg"
                 source={{
-                  uri: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80",
+                  uri: "https://api.multiavatar.com/" + userName + ".png",
                 }}
               />
             </Center>
@@ -154,5 +135,4 @@ const styles = StyleSheet.create({
   },
   card: { flex: 1 },
 });
-
 export default MainPage;
