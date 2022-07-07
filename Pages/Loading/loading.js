@@ -27,7 +27,7 @@ export default function LoadingPages({ navigation }) {
         console.log(loadedUserData);
 
         login(loadedUserData);
-        navigation.replace("Main");
+        navigation.replace("MainDrawer");
       } else {
         navigation.replace("Login");
       }

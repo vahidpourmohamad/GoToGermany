@@ -14,15 +14,26 @@ import {
 } from "native-base";
 import { AuthContext } from "../../Helper/AuthContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import useAxiosSetData from "../../Helper/Hooks/useAxiosSetData";
 
 export default function Login(props) {
   const { navigation, route } = props;
   // console.log(props);
 
-  const [inputs, setInputs] = useState({ userName: "", password: "" });
+  const [inputs, setInputs] = useState({ userName: "", userTelephone: "" });
+  const [userNameCorrect, setUSerNameCorrect] = useState();
+
   const { login } = useContext(AuthContext);
   const [userData, setUserData] = useState();
   const [newUser, setNewUser] = useState(false);
+  const { response, loading, error, sendData } = useAxiosSetData({
+    method: "post",
+    url: "/login",
+    headers: JSON.stringify({ accept: "*/*" }),
+    body: JSON.stringify({
+      name: inputs.userName,
+    }),
+  });
 
   const getData = async () => {
     try {
@@ -63,7 +74,24 @@ export default function Login(props) {
     getData();
   }, []);
 
-  const loginButtonClick = () => {};
+  useEffect(() => {
+    if (response !== null) {
+      if (response.telephone == inputs.userTelephone) {
+        login({
+          userId: response._id,
+          userName: inputs.userName,
+          userPhone: inputs.userTelephone,
+          userAvatar: "https://api.multiavatar.com/" + inputs.username,
+          userGender: false,
+        });
+        navigation.replace("Main");
+      }
+    }
+  }, [response]);
+
+  const loginButtonClick = () => {
+    sendData();
+  };
   const onChangeHandler = (name, value) => {
     setInputs({ ...inputs, [name]: value });
   };
@@ -100,7 +128,7 @@ export default function Login(props) {
           <VStack space={3} mt="5">
             <FormControl>
               <FormControl.Label alignSelf="flex-end">
-                نام کاربری
+                نام شما
               </FormControl.Label>
               <Input
                 onChangeText={(text) => onChangeHandler("userName", text)}
@@ -109,12 +137,12 @@ export default function Login(props) {
             </FormControl>
             <FormControl>
               <FormControl.Label alignSelf="flex-end">
-                کلمه عبور
+                تلفن همراه
               </FormControl.Label>
               <Input
                 style={{ fontFamily: "IRANSansBold", fontSize: 14 }}
                 type="text"
-                onChangeText={(text) => onChangeHandler("password", text)}
+                onChangeText={(text) => onChangeHandler("userTelephone", text)}
               />
               <Link
                 _text={{

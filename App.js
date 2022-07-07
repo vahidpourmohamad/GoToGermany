@@ -17,6 +17,7 @@ import Login from "./Pages/Login/Login.js";
 import Register from "./Pages/Register/Register.js";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import LoadingPages from "./Pages/Loading/loading.js";
+import DrawerNav from "./Pages/MainPage/DrawerNav.js";
 const Stack = createNativeStackNavigator();
 const theme = extendTheme({
   fontConfig: {
@@ -101,7 +102,7 @@ export default function App() {
               >
                 <Stack.Screen name="Loading" component={LoadingPages} />
                 <Stack.Screen name="Login" component={Login} />
-                <Stack.Screen name="Main" component={MainPage} />
+                <Stack.Screen name="MainDrawer" component={DrawerNav} />
                 <Stack.Screen name="Register" component={Register} />
               </Stack.Navigator>
             </NavigationContainer>
