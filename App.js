@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
+import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { useState, useEffect, useCallback, useContext } from "react";
@@ -18,7 +18,12 @@ import Register from "./Pages/Register/Register.js";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import LoadingPages from "./Pages/Loading/loading.js";
 import DrawerNav from "./Pages/MainPage/DrawerNav.js";
-const Stack = createNativeStackNavigator();
+import RootNav from "./Helper/RootNav.js";
+import { AuthenticationContext } from "./Helper/AuthenticationContext.js";
+import { createDrawerNavigator } from "@react-navigation/drawer";
+import DrawerContent from "./Pages/DrawerContent.js/DrawerContent.js";
+// const Stack = createNativeStackNavigator();
+const Drawer = createDrawerNavigator();
 const theme = extendTheme({
   fontConfig: {
     IranSans: {
@@ -52,10 +57,81 @@ const theme = extendTheme({
     mono: "IRANSansRegular",
   },
 });
+
 export default function App() {
   const [appIsReady, setAppIsReady] = useState(false);
   const [userNew, setUserNew] = useState(true);
   const { login } = useContext(AuthContext);
+
+  const initialLoginState = {
+    isLoading: true,
+    userName: null,
+    userToken: null,
+  };
+  const loginReducer = (prevState, action) => {
+    switch (action.type) {
+      case "RETRIEVE_TOKEN":
+        return {
+          ...prevState,
+          userToken: action.token,
+          userName: action.id,
+          isLoading: false,
+        };
+      case "LOGIN":
+        return {
+          ...prevState,
+          userName: action.id,
+          userToken: action.token,
+          isLoading: false,
+        };
+      case "LOGOUT":
+        return {
+          ...prevState,
+          userName: null,
+          userToken: null,
+          isLoading: false,
+        };
+    }
+  };
+
+  const [loginState, dispatch] = React.useReducer(
+    loginReducer,
+    initialLoginState
+  );
+
+  const authContext = React.useMemo(
+    () => ({
+      signIn: async (foundUser) => {
+        const { userToken, userName } = foundUser;
+        // const userToken = String(foundUser[0].userToken);
+        // const userName = foundUser[0].username;
+        console.log(userName);
+
+        try {
+          await AsyncStorage.setItem("userToken", userToken);
+          await AsyncStorage.setItem("userName", userName);
+        } catch (e) {
+          console.log(e);
+        }
+
+        dispatch({ type: "LOGIN", id: userName, token: userToken });
+      },
+      signOut: async () => {
+        try {
+          await AsyncStorage.removeItem("userToken");
+          await AsyncStorage.removeItem("userName");
+        } catch (e) {
+          console.log(e);
+        }
+        dispatch({ type: "LOGOUT" });
+      },
+      userName: loginState.userName,
+      userToken: loginState.userToken,
+      isLoading: loginState.isLoading,
+    }),
+    [loginState.userName, loginState.userToken, loginState.isLoading]
+  );
+
   useEffect(() => {
     async function prepare() {
       try {
@@ -69,9 +145,22 @@ export default function App() {
           IRANSansRegular: require("./assets/Fonts/IRANSans.ttf"),
           IRANSansMedium: require("./assets/Fonts/IRANSans_Medium.ttf"),
         });
-        // Artificially delay for two seconds to simulate a slow loading
-        // experience. Please remove this if you copy and paste the code!
-        await new Promise((resolve) => setTimeout(resolve, 2000));
+        // setTimeout(async () => {
+        // setIsLoading(false);
+        let userToken;
+        userToken = null;
+
+        try {
+          userToken = await AsyncStorage.getItem("userToken");
+          userName = await AsyncStorage.getItem("userName");
+        } catch (e) {
+          console.log(e);
+        }
+        console.log("user token: ", userName);
+        dispatch({ type: "RETRIEVE_TOKEN", token: userToken, id: userName });
+        //   console.log(loginState.userName);
+        // }, 5000);
+        await new Promise((resolve) => setTimeout(resolve, 1000));
       } catch (e) {
         console.warn(e);
       } finally {
@@ -81,34 +170,47 @@ export default function App() {
     }
     prepare();
   }, []);
+
   const onLayoutRootView = useCallback(async () => {
     if (appIsReady) {
       await SplashScreen.hideAsync();
     }
   }, [appIsReady]);
+
   if (!appIsReady) {
     return null;
   }
+  if (loginState.isLoading) {
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <ActivityIndicator size="large" />
+      </View>
+    );
+  }
   return (
     <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
-      <AppContextProvider>
+      {/* <AppContextProvider> */}
+      <AuthenticationContext.Provider value={authContext}>
         <ErrorBoundary>
           <NativeBaseProvider theme={theme}>
             <NavigationContainer>
-              <Stack.Navigator
-                screenOptions={{
-                  headerShown: false,
-                }}
-              >
-                <Stack.Screen name="Loading" component={LoadingPages} />
-                <Stack.Screen name="Login" component={Login} />
-                <Stack.Screen name="MainDrawer" component={DrawerNav} />
-                <Stack.Screen name="Register" component={Register} />
-              </Stack.Navigator>
+              {loginState.userToken !== null ? (
+                <Drawer.Navigator
+                  screenOptions={{
+                    headerShown: false,
+                  }}
+                  drawerContent={(props) => <DrawerContent {...props} />}
+                >
+                  <Drawer.Screen name="MainPage" component={MainPage} />
+                </Drawer.Navigator>
+              ) : (
+                <RootNav></RootNav>
+              )}
             </NavigationContainer>
           </NativeBaseProvider>
         </ErrorBoundary>
-      </AppContextProvider>
+      </AuthenticationContext.Provider>
+      {/* </AppContextProvider> */}
     </View>
   );
 }

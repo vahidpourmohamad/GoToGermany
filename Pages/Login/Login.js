@@ -15,6 +15,7 @@ import {
 import { AuthContext } from "../../Helper/AuthContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import useAxiosSetData from "../../Helper/Hooks/useAxiosSetData";
+import { AuthenticationContext } from "../../Helper/AuthenticationContext";
 
 export default function Login(props) {
   const { navigation, route } = props;
@@ -23,9 +24,10 @@ export default function Login(props) {
   const [inputs, setInputs] = useState({ userName: "", userTelephone: "" });
   const [userNameCorrect, setUSerNameCorrect] = useState();
 
-  const { login } = useContext(AuthContext);
+  const { signIn } = useContext(AuthenticationContext);
   const [userData, setUserData] = useState();
   const [newUser, setNewUser] = useState(false);
+
   const { response, loading, error, sendData } = useAxiosSetData({
     method: "post",
     url: "/login",
@@ -71,20 +73,21 @@ export default function Login(props) {
   };
 
   useEffect(() => {
-    getData();
+    //getData();
   }, []);
 
   useEffect(() => {
     if (response !== null) {
       if (response.telephone == inputs.userTelephone) {
-        login({
-          userId: response._id,
-          userName: inputs.userName,
-          userPhone: inputs.userTelephone,
-          userAvatar: "https://api.multiavatar.com/" + inputs.username,
-          userGender: false,
-        });
-        navigation.replace("Main");
+        // login({
+        //   userId: response._id,
+        //   userName: inputs.userName,
+        //   userPhone: inputs.userTelephone,
+        //   userAvatar: "https://api.multiavatar.com/" + inputs.username,
+        //   userGender: false,
+        // });
+        signIn({ userToken: response._id, userName: inputs.userName });
+        // navigation.replace("Main");
       }
     }
   }, [response]);

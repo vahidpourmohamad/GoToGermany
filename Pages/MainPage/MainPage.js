@@ -8,16 +8,38 @@ import {
   Text,
   Circle,
 } from "native-base";
-import { StyleSheet, View, ImageBackground } from "react-native";
+import {
+  StyleSheet,
+  View,
+  ImageBackground,
+  ActivityIndicator,
+} from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import WordCard from "../../Components/wordCard.js";
 import { AuthContext } from "../../Helper/AuthContext.js";
+import { AuthenticationContext } from "../../Helper/AuthenticationContext.js";
 const MainPage = ({ navigation, route }) => {
-  const { userName, userId, userAvatar, userPhone, userGender } =
-    useContext(AuthContext);
+  const { userName, userToken, signOut, isLoading } = useContext(
+    AuthenticationContext
+  );
+  const [loaded, setLoaded] = useState(false);
+
+  // console.log(userName);
+
   useEffect(() => {
-    return () => {};
-  }, []);
+    console.log(userToken);
+
+    // if (userName !== null) {
+    //   setLoaded(true);
+    // }
+  }, [isLoading]);
+  if (isLoading == true) {
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <ActivityIndicator size="large" />
+      </View>
+    );
+  }
   return (
     <ImageBackground
       style={styles.image}
@@ -79,6 +101,10 @@ const MainPage = ({ navigation, route }) => {
                 variant="solid"
                 bg="violet.900"
                 icon={<AntDesign name="star" size={24} color="white" />}
+                onPress={() => {
+                  console.log("test");
+                  signOut();
+                }}
               />
               <Text
                 mt={2}

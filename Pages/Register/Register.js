@@ -15,6 +15,7 @@ import {
 import { AuthContext } from "../../Helper/AuthContext";
 // import useAxios from "../../Helper/Hooks/useAxiosFetchData";
 import useAxiosSetData from "../../Helper/Hooks/useAxiosSetData";
+import { AuthenticationContext } from "../../Helper/AuthenticationContext";
 
 export default function Register(props) {
   const { navigation, route } = props;
@@ -25,6 +26,7 @@ export default function Register(props) {
 
   const [errors, setErrors] = useState([]);
   const { login } = useContext(AuthContext);
+  const { signIn } = useContext(AuthenticationContext);
 
   const onChangeHandler = (name, value) => {
     setInputs({ ...inputs, [name]: value });
@@ -46,14 +48,17 @@ export default function Register(props) {
   });
   useEffect(() => {
     if (response !== null) {
-      login({
-        userId: response._id,
-        userName: inputs.username,
-        userPhone: inputs.mobileNumber,
-        userAvatar: "https://api.multiavatar.com/" + inputs.username,
-        userGender: false,
-      });
-      navigation.replace("Main");
+      // login({
+      //   userId: response._id,
+      //   userName: inputs.username,
+      //   userPhone: inputs.mobileNumber,
+      //   userAvatar: "https://api.multiavatar.com/" + inputs.username,
+      //   userGender: false,
+      // });
+      // navigation.replace("Main");
+      console.log("BSignIn  UserName : " + inputs.username);
+
+      signIn({ userToken: response._id, userName: inputs.username });
     }
   }, [response]);
 
