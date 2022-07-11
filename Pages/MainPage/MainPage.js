@@ -136,10 +136,20 @@ const MainPage = ({ navigation, route }) => {
             w="80%"
             h="100%"
           >
-            <Circle size="120px" bg="red.500">
+            <Circle
+              size="120px"
+              bg="red.500"
+              borderWidth={4}
+              borderColor="red.700"
+            >
               <AntDesign name="close" size={45} color="white" />
             </Circle>
-            <Circle size="120px" bg="success.500">
+            <Circle
+              size="120px"
+              bg="success.500"
+              borderWidth={4}
+              borderColor="success.700"
+            >
               <AntDesign name="check" size={45} color="white" />
             </Circle>
           </HStack>
