@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useContext } from 'react';
 import {
   VStack,
   Center,
@@ -7,35 +7,24 @@ import {
   IconButton,
   Text,
   Circle,
-} from "native-base";
+} from 'native-base';
 import {
   StyleSheet,
   View,
   ImageBackground,
   ActivityIndicator,
-} from "react-native";
-import { AntDesign } from "@expo/vector-icons";
-import WordCard from "../../Components/wordCard.js";
-import { AuthContext } from "../../Helper/AuthContext.js";
-import { AuthenticationContext } from "../../Helper/AuthenticationContext.js";
+} from 'react-native';
+import { AntDesign } from '@expo/vector-icons';
+import WordCard from '../../Components/wordCard.js';
+
+import { AuthenticationContext } from '../../Helper/AuthenticationContext.js';
 const MainPage = ({ navigation, route }) => {
-  const { userName, userToken, signOut, isLoading } = useContext(
-    AuthenticationContext
-  );
-  const [loaded, setLoaded] = useState(false);
+  const { userName, signOut, isLoading } = useContext(AuthenticationContext);
+  // const [loaded, setLoaded] = useState(false);
 
-  // console.log(userName);
-
-  useEffect(() => {
-    console.log(userToken);
-
-    // if (userName !== null) {
-    //   setLoaded(true);
-    // }
-  }, [isLoading]);
-  if (isLoading == true) {
+  if (isLoading === true) {
     return (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
         <ActivityIndicator size="large" />
       </View>
     );
@@ -46,7 +35,7 @@ const MainPage = ({ navigation, route }) => {
       width="100%"
       hight="100%"
       resizeMode="cover"
-      source={require("../../assets/Back.png")}
+      source={require('../../assets/Back.png')}
     >
       <VStack safeArea space={5} alignItems="center" mt={4}>
         <Center w="80%" h="12%" bg="white" rounded="29" shadow={9}>
@@ -54,18 +43,18 @@ const MainPage = ({ navigation, route }) => {
             <Center w="65%" h="100%">
               <VStack mt={3} h="100%" w="100%" alignItems="flex-end">
                 <Text
-                  style={{ fontFamily: "IRANSansBold", fontSize: 14 }}
+                  style={{ fontFamily: 'IRANSansBold', fontSize: 14 }}
                   mt={1}
                 >
                   {userName}
                 </Text>
                 <Text
                   mt={2}
-                  style={{ fontFamily: "IRANSansMedium", fontSize: 14 }}
+                  style={{ fontFamily: 'IRANSansMedium', fontSize: 14 }}
                 >
                   تعداد کلمات امروز
                 </Text>
-                <Text style={{ fontFamily: "IRANSansLight", fontSize: 12 }}>
+                <Text style={{ fontFamily: 'IRANSansLight', fontSize: 12 }}>
                   مرور امروز
                 </Text>
               </VStack>
@@ -75,7 +64,7 @@ const MainPage = ({ navigation, route }) => {
                 bg="green.500"
                 size="lg"
                 source={{
-                  uri: "https://api.multiavatar.com/" + userName + ".png",
+                  uri: 'https://api.multiavatar.com/' + userName + '.png',
                 }}
               />
             </Center>
@@ -91,7 +80,7 @@ const MainPage = ({ navigation, route }) => {
               />
               <Text
                 mt={2}
-                style={{ fontFamily: "IRANSansMedium", fontSize: 14 }}
+                style={{ fontFamily: 'IRANSansMedium', fontSize: 14 }}
               >
                 قبلی
               </Text>
@@ -102,13 +91,13 @@ const MainPage = ({ navigation, route }) => {
                 bg="violet.900"
                 icon={<AntDesign name="star" size={24} color="white" />}
                 onPress={() => {
-                  console.log("test");
+                  console.log('test');
                   signOut();
                 }}
               />
               <Text
                 mt={2}
-                style={{ fontFamily: "IRANSansMedium", fontSize: 14 }}
+                style={{ fontFamily: 'IRANSansMedium', fontSize: 14 }}
               >
                 پاسخ
               </Text>
@@ -121,7 +110,7 @@ const MainPage = ({ navigation, route }) => {
               />
               <Text
                 mt={2}
-                style={{ fontFamily: "IRANSansMedium", fontSize: 14 }}
+                style={{ fontFamily: 'IRANSansMedium', fontSize: 14 }}
               >
                 بعدی
               </Text>
@@ -161,13 +150,13 @@ const MainPage = ({ navigation, route }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   image: {
     flex: 1,
-    justifyContent: "center",
+    justifyContent: 'center',
   },
   card: { flex: 1 },
 });

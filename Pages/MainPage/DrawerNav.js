@@ -1,8 +1,8 @@
-import { View, Text } from "react-native";
-import React from "react";
-import { createDrawerNavigator } from "@react-navigation/drawer";
-import { DrawerActions } from "@react-navigation/native";
-import MainPage from "./MainPage";
+// import { View, Text } from 'react-native';
+import React from 'react';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+// import { DrawerActions } from '@react-navigation/native';
+import MainPage from './MainPage';
 
 export default function DrawerNav() {
   const Drawer = createDrawerNavigator();
@@ -12,7 +12,7 @@ export default function DrawerNav() {
         headerShown: false,
       }}
     >
-      <Drawer.Screen name="MainPage" component={(m = MainPage)} />
+      <Drawer.Screen name="MainPage" component={MainPage} />
     </Drawer.Navigator>
   );
 }

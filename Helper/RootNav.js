@@ -1,8 +1,8 @@
-import React from "react";
+import React from 'react';
 
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import Login from "../Pages/Login/Login";
-import Register from "../Pages/Register/Register";
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import Login from '../Pages/Login/Login';
+import Register from '../Pages/Register/Register';
 
 const RootStack = createNativeStackNavigator();
 

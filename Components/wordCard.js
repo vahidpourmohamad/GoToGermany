@@ -1,57 +1,57 @@
-import React from "react";
-import { useState } from "react";
+import React from 'react';
+import { useState } from 'react';
 import {
-  Box,
-  VStack,
+  // Box,
+  // VStack,
   Center,
-  HStack,
-  Avatar,
-  extendTheme,
-  IconButton,
-  Image,
-  Circle,
+  // HStack,
+  // Avatar,
+  // extendTheme,
+  // IconButton,
+  // Image,
+  // Circle,
   Pressable,
-} from "native-base";
-import { StatusBar } from "expo-status-bar";
+} from 'native-base';
+// import { StatusBar } from 'expo-status-bar';
 import {
   StyleSheet,
   View,
-  ImageBackground,
-  TouchableOpacity,
+  // ImageBackground,
+  // TouchableOpacity,
   Text,
-} from "react-native";
-import { AntDesign } from "@expo/vector-icons";
+} from 'react-native';
+// import { AntDesign } from '@expo/vector-icons';
 
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
   withTiming,
-  useDerivedValue,
-  interpolate,
+  // useDerivedValue,
+  // interpolate,
   withRepeat,
-  withSpring,
-} from "react-native-reanimated";
+  // withSpring,
+} from 'react-native-reanimated';
 
 function WordCard() {
   const [answerShow, setAnswerShow] = useState(false);
   const animation = useSharedValue(0);
-  const wordGerman = " Tee";
-  const wordPersian = "چای";
-  const plural = "Tees";
-  const wordGender = "Der";
-  const question = "چای";
+  const wordGerman = ' Tee';
+  const wordPersian = 'چای';
+  const plural = 'Tees';
+  const wordGender = 'Der';
+  const question = 'چای';
 
   const cardFlip = useAnimatedStyle(() => {
     return {
       transform: [
         {
-          rotateY: animation.value + "deg",
+          rotateY: animation.value + 'deg',
         },
       ],
     };
   });
   const flipCard = () => {
-    if (answerShow == true) {
+    if (answerShow === true) {
       setAnswerShow(false);
     } else {
       setAnswerShow(true);
@@ -61,11 +61,11 @@ function WordCard() {
         if (finished) {
           // animation.value=0;
         } else {
-          console.log("ANIMATION GOT CANCELLED");
+          console.log('ANIMATION GOT CANCELLED');
         }
       }),
       2,
-      true
+      true,
     );
   };
 
@@ -84,20 +84,20 @@ function WordCard() {
         <Pressable onPress={flipCard}>
           <Animated.View style={cardFlip}>
             {answerShow ? (
-              <Text style={{ fontFamily: "IRANSansBold", fontSize: 40 }}>
+              <Text style={{ fontFamily: 'IRANSansBold', fontSize: 40 }}>
                 {question}
               </Text>
             ) : (
               <View style={styles.container}>
                 <View style={styles.wordRow}>
                   <Text
-                    style={{ fontFamily: "IRANSansBold", fontSize: 30 }}
+                    style={{ fontFamily: 'IRANSansBold', fontSize: 30 }}
                     mt={1}
                   >
-                    {wordGender + " "}
+                    {wordGender + ' '}
                   </Text>
                   <Text
-                    style={{ fontFamily: "IRANSansBold", fontSize: 22 }}
+                    style={{ fontFamily: 'IRANSansBold', fontSize: 22 }}
                     mt={1}
                   >
                     جنسیت :
@@ -105,13 +105,13 @@ function WordCard() {
                 </View>
                 <View style={styles.wordRow}>
                   <Text
-                    style={{ fontFamily: "IRANSansBold", fontSize: 30 }}
+                    style={{ fontFamily: 'IRANSansBold', fontSize: 30 }}
                     mt={1}
                   >
-                    {wordGerman + " "}
+                    {wordGerman + ' '}
                   </Text>
                   <Text
-                    style={{ fontFamily: "IRANSansBold", fontSize: 22 }}
+                    style={{ fontFamily: 'IRANSansBold', fontSize: 22 }}
                     mt={1}
                   >
                     اسم آلمانی :
@@ -119,13 +119,13 @@ function WordCard() {
                 </View>
                 <View style={styles.wordRow}>
                   <Text
-                    style={{ fontFamily: "IRANSansBold", fontSize: 30 }}
+                    style={{ fontFamily: 'IRANSansBold', fontSize: 30 }}
                     mt={1}
                   >
-                    {wordPersian + " "}
+                    {wordPersian + ' '}
                   </Text>
                   <Text
-                    style={{ fontFamily: "IRANSansBold", fontSize: 22 }}
+                    style={{ fontFamily: 'IRANSansBold', fontSize: 22 }}
                     mt={1}
                   >
                     معنی اسم :
@@ -133,13 +133,13 @@ function WordCard() {
                 </View>
                 <View style={styles.wordRow}>
                   <Text
-                    style={{ fontFamily: "IRANSansBold", fontSize: 30 }}
+                    style={{ fontFamily: 'IRANSansBold', fontSize: 30 }}
                     mt={1}
                   >
-                    {plural + " "}
+                    {plural + ' '}
                   </Text>
                   <Text
-                    style={{ fontFamily: "IRANSansBold", fontSize: 22 }}
+                    style={{ fontFamily: 'IRANSansBold', fontSize: 22 }}
                     mt={1}
                   >
                     شکل جمع :
@@ -156,23 +156,23 @@ function WordCard() {
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "space-around",
-    height: "100%",
-    width: "100%",
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'space-around',
+    height: '100%',
+    width: '100%',
     // justifyItems: "space-between",
   },
   wordRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    justifyItems: "space-between",
-    width: "70%",
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    justifyItems: 'space-between',
+    width: '70%',
   },
   image: {
     flex: 1,
-    justifyContent: "center",
+    justifyContent: 'center',
   },
   card: { flex: 1 },
 });

@@ -1,6 +1,6 @@
-import { createContext, useReducer } from "react";
-import React from "react";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { createContext, useReducer } from 'react';
+import React from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function AuthProvider(props) {
   const [state, dispatch] = useReducer(authReducer, initialState);
@@ -8,23 +8,23 @@ export default function AuthProvider(props) {
   const storeData = async (userData) => {
     try {
       const { userId, userName, userPhone, userAvatar, userGender } = userData;
-      await AsyncStorage.setItem("@userId", userId);
-      await AsyncStorage.setItem("@userName", userName);
-      await AsyncStorage.setItem("@userPhone", userPhone);
-      await AsyncStorage.setItem("@userAvatar", userAvatar);
-      await AsyncStorage.setItem("@userGender", userGender.toString());
+      await AsyncStorage.setItem('@userId', userId);
+      await AsyncStorage.setItem('@userName', userName);
+      await AsyncStorage.setItem('@userPhone', userPhone);
+      await AsyncStorage.setItem('@userAvatar', userAvatar);
+      await AsyncStorage.setItem('@userGender', userGender.toString());
     } catch (e) {
       console.log(e);
     }
   };
 
   const login = (userData) => {
-    dispatch({ type: "LOGIN", payload: userData });
+    dispatch({ type: 'LOGIN', payload: userData });
     storeData(userData);
   };
 
   function logout() {
-    dispatch({ type: "LOGOUT" });
+    dispatch({ type: 'LOGOUT' });
     storeData(initialState);
   }
   return (
@@ -63,7 +63,7 @@ const AuthContext = createContext({
 
 function authReducer(state, action) {
   switch (action.type) {
-    case "LOGIN":
+    case 'LOGIN':
       return {
         ...state,
         userId: action.payload.userId,
@@ -72,7 +72,7 @@ function authReducer(state, action) {
         userAvatar: action.payload.userAvatar,
         userGender: action.payload.userGender,
       };
-    case "LOGOUT":
+    case 'LOGOUT':
       return {
         ...state,
         userId: null,

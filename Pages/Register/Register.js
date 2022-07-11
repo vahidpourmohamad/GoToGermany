@@ -1,49 +1,38 @@
-import { StyleSheet, Text, View, ImageBackground } from "react-native";
-import React, { useContext, useEffect, useState } from "react";
-import {
-  Center,
-  Box,
-  FormControl,
-  Link,
-  Button,
-  HStack,
-  Image,
-  VStack,
-  Heading,
-  Input,
-} from "native-base";
-import { AuthContext } from "../../Helper/AuthContext";
+import { StyleSheet, Text, ImageBackground } from 'react-native';
+import React, { useContext, useEffect, useState } from 'react';
+import { Center, Box, FormControl, Button, VStack, Input } from 'native-base';
+// import { AuthContext } from '../../Helper/AuthContext';
 // import useAxios from "../../Helper/Hooks/useAxiosFetchData";
-import useAxiosSetData from "../../Helper/Hooks/useAxiosSetData";
-import { AuthenticationContext } from "../../Helper/AuthenticationContext";
+import useAxiosSetData from '../../Helper/Hooks/useAxiosSetData';
+import { AuthenticationContext } from '../../Helper/AuthenticationContext';
 
 export default function Register(props) {
-  const { navigation, route } = props;
+  // const { navigation, route } = props;
   const [inputs, setInputs] = useState({
-    username: "",
-    mobileNumber: "",
+    username: '',
+    mobileNumber: '',
   });
 
-  const [errors, setErrors] = useState([]);
-  const { login } = useContext(AuthContext);
+  // const [errors, setErrors] = useState([]);
+  // const { login } = useContext(AuthContext);
   const { signIn } = useContext(AuthenticationContext);
 
   const onChangeHandler = (name, value) => {
     setInputs({ ...inputs, [name]: value });
   };
 
-  const { response, loading, error, sendData } = useAxiosSetData({
-    method: "post",
-    url: "/userRegister",
-    headers: JSON.stringify({ accept: "*/*" }),
+  const { response, sendData } = useAxiosSetData({
+    method: 'post',
+    url: '/userRegister',
+    headers: JSON.stringify({ accept: '*/*' }),
     body: JSON.stringify({
       name: inputs.username,
       telephone: inputs.mobileNumber,
-      creationDate: new Date().toLocaleString() + "",
+      creationDate: new Date().toLocaleString() + '',
       paymentStatus: true,
-      applicationVersion: "0.1.0",
+      applicationVersion: '0.1.0',
       gender: true,
-      profilePhoto: "https://api.multiavatar.com/" + inputs.username,
+      profilePhoto: 'https://api.multiavatar.com/' + inputs.username,
     }),
   });
   useEffect(() => {
@@ -56,7 +45,7 @@ export default function Register(props) {
       //   userGender: false,
       // });
       // navigation.replace("Main");
-      console.log("BSignIn  UserName : " + inputs.username);
+      console.log('BSignIn  UserName : ' + inputs.username);
 
       signIn({ userToken: response._id, userName: inputs.username });
     }
@@ -68,13 +57,13 @@ export default function Register(props) {
       width="100%"
       hight="100%"
       resizeMode="cover"
-      source={require("../../assets/Back.png")}
+      source={require('../../assets/Back.png')}
     >
       <Center w="100%">
         <Box bg="white" rounded="29" safeArea p="2" py="8" w="90%" maxW="290">
           <Text
             color="coolGray.800"
-            style={{ fontFamily: "IRANSansBold", fontSize: 26 }}
+            style={{ fontFamily: 'IRANSansBold', fontSize: 26 }}
             alignSelf="Center"
           >
             به اپلیکیشن بریم آلمان خوش آمدید
@@ -82,12 +71,12 @@ export default function Register(props) {
           <Text
             mt="1"
             _dark={{
-              color: "warmGray.200",
+              color: 'warmGray.200',
             }}
             color="coolGray.600"
             fontWeight="medium"
             size="xs"
-            style={{ fontFamily: "IRANSansMedium", fontSize: 12 }}
+            style={{ fontFamily: 'IRANSansMedium', fontSize: 12 }}
           >
             ثبت نام کنید
           </Text>
@@ -98,8 +87,8 @@ export default function Register(props) {
                 نام شما
               </FormControl.Label>
               <Input
-                onChangeText={(text) => onChangeHandler("username", text)}
-                style={{ fontFamily: "IRANSansBold", fontSize: 14 }}
+                onChangeText={(text) => onChangeHandler('username', text)}
+                style={{ fontFamily: 'IRANSansBold', fontSize: 14 }}
               />
             </FormControl>
             <FormControl>
@@ -107,14 +96,14 @@ export default function Register(props) {
                 شماره همراه
               </FormControl.Label>
               <Input
-                style={{ fontFamily: "IRANSansBold", fontSize: 14 }}
+                style={{ fontFamily: 'IRANSansBold', fontSize: 14 }}
                 type="text"
-                onChangeText={(text) => onChangeHandler("mobileNumber", text)}
+                onChangeText={(text) => onChangeHandler('mobileNumber', text)}
               />
             </FormControl>
 
             <Button
-              _text={{ style: { fontFamily: "IRANSansBold", fontSize: 12 } }}
+              _text={{ style: { fontFamily: 'IRANSansBold', fontSize: 12 } }}
               mt="2"
               colorScheme="indigo"
               onPress={sendData}
@@ -130,12 +119,12 @@ export default function Register(props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   image: {
     flex: 1,
-    justifyContent: "center",
+    justifyContent: 'center',
   },
 });

@@ -1,67 +1,61 @@
-import { StatusBar } from "expo-status-bar";
-import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
-import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { useState, useEffect, useCallback, useContext } from "react";
-import React from "react";
-import { NativeBaseProvider, extendTheme } from "native-base";
-import * as Font from "expo-font";
-import * as SplashScreen from "expo-splash-screen";
-import AppLoading from "expo-app-loading";
-import MainPage from "./Pages/MainPage/MainPage.js";
-import ErrorBoundary from "./Helper/ErrorBoundry.js";
-import { AppContextProvider } from "./Helper/appContextProvider";
-///Apollo Client Setup
-import { AuthContext, AuthProvider } from "./Helper/AuthContext.js";
-import Login from "./Pages/Login/Login.js";
-import Register from "./Pages/Register/Register.js";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import LoadingPages from "./Pages/Loading/loading.js";
-import DrawerNav from "./Pages/MainPage/DrawerNav.js";
-import RootNav from "./Helper/RootNav.js";
-import { AuthenticationContext } from "./Helper/AuthenticationContext.js";
-import { createDrawerNavigator } from "@react-navigation/drawer";
-import DrawerContent from "./Pages/DrawerContent.js/DrawerContent.js";
+import { ActivityIndicator, View } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+
+import { useState, useEffect, useCallback } from 'react';
+import React from 'react';
+import { NativeBaseProvider, extendTheme } from 'native-base';
+import * as Font from 'expo-font';
+import * as SplashScreen from 'expo-splash-screen';
+
+import MainPage from './Pages/MainPage/MainPage.js';
+import ErrorBoundary from './Helper/ErrorBoundry.js';
+
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+import RootNav from './Helper/RootNav.js';
+import { AuthenticationContext } from './Helper/AuthenticationContext.js';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import DrawerContent from './Pages/DrawerContent.js/DrawerContent.js';
 // const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
 const theme = extendTheme({
   fontConfig: {
     IranSans: {
       100: {
-        normal: "IRANSansRegular",
+        normal: 'IRANSansRegular',
       },
       200: {
-        normal: "IRANSans_UltraLight",
+        normal: 'IRANSans_UltraLight',
       },
       300: {
-        normal: "IRANSans_Light",
+        normal: 'IRANSans_Light',
       },
       400: {
-        normal: "IRANSansRegular",
+        normal: 'IRANSansRegular',
       },
       500: {
-        normal: "IRANSans_Medium",
+        normal: 'IRANSans_Medium',
       },
       600: {
-        normal: "IRANSans_Bold",
+        normal: 'IRANSans_Bold',
       },
     },
   },
   // Make sure values below matches any of the keys in `fontConfig`
   fonts: {
-    heading: "IRANSansBold",
-    body: "IRANSansMedium",
-    Regular: "IRANSansRegular",
-    light: "IRANSansLight",
-    Ultralight: "IRANSansUltraLight",
-    mono: "IRANSansRegular",
+    heading: 'IRANSansBold',
+    body: 'IRANSansMedium',
+    Regular: 'IRANSansRegular',
+    light: 'IRANSansLight',
+    Ultralight: 'IRANSansUltraLight',
+    mono: 'IRANSansRegular',
   },
 });
 
 export default function App() {
   const [appIsReady, setAppIsReady] = useState(false);
-  const [userNew, setUserNew] = useState(true);
-  const { login } = useContext(AuthContext);
+  // const [userNew, setUserNew] = useState(true);
+  // const { login } = useContext(AuthContext);
 
   const initialLoginState = {
     isLoading: true,
@@ -70,21 +64,21 @@ export default function App() {
   };
   const loginReducer = (prevState, action) => {
     switch (action.type) {
-      case "RETRIEVE_TOKEN":
+      case 'RETRIEVE_TOKEN':
         return {
           ...prevState,
           userToken: action.token,
           userName: action.id,
           isLoading: false,
         };
-      case "LOGIN":
+      case 'LOGIN':
         return {
           ...prevState,
           userName: action.id,
           userToken: action.token,
           isLoading: false,
         };
-      case "LOGOUT":
+      case 'LOGOUT':
         return {
           ...prevState,
           userName: null,
@@ -96,7 +90,7 @@ export default function App() {
 
   const [loginState, dispatch] = React.useReducer(
     loginReducer,
-    initialLoginState
+    initialLoginState,
   );
 
   const authContext = React.useMemo(
@@ -108,28 +102,28 @@ export default function App() {
         console.log(userName);
 
         try {
-          await AsyncStorage.setItem("userToken", userToken);
-          await AsyncStorage.setItem("userName", userName);
+          await AsyncStorage.setItem('userToken', userToken);
+          await AsyncStorage.setItem('userName', userName);
         } catch (e) {
           console.log(e);
         }
 
-        dispatch({ type: "LOGIN", id: userName, token: userToken });
+        dispatch({ type: 'LOGIN', id: userName, token: userToken });
       },
       signOut: async () => {
         try {
-          await AsyncStorage.removeItem("userToken");
-          await AsyncStorage.removeItem("userName");
+          await AsyncStorage.removeItem('userToken');
+          await AsyncStorage.removeItem('userName');
         } catch (e) {
           console.log(e);
         }
-        dispatch({ type: "LOGOUT" });
+        dispatch({ type: 'LOGOUT' });
       },
       userName: loginState.userName,
       userToken: loginState.userToken,
       isLoading: loginState.isLoading,
     }),
-    [loginState.userName, loginState.userToken, loginState.isLoading]
+    [loginState.userName, loginState.userToken, loginState.isLoading],
   );
 
   useEffect(() => {
@@ -139,25 +133,27 @@ export default function App() {
         await SplashScreen.preventAutoHideAsync();
         // Pre-load fonts, make any API calls you need to do here
         await Font.loadAsync({
-          IRANSansBold: require("./assets/Fonts/IRANSans_Bold.ttf"),
-          IRANSansLight: require("./assets/Fonts/IRANSans_Light.ttf"),
-          IRANSansUltraLight: require("./assets/Fonts/IRANSans_UltraLight.ttf"),
-          IRANSansRegular: require("./assets/Fonts/IRANSans.ttf"),
-          IRANSansMedium: require("./assets/Fonts/IRANSans_Medium.ttf"),
+          IRANSansBold: require('./assets/Fonts/IRANSans_Bold.ttf'),
+          IRANSansLight: require('./assets/Fonts/IRANSans_Light.ttf'),
+          IRANSansUltraLight: require('./assets/Fonts/IRANSans_UltraLight.ttf'),
+          IRANSansRegular: require('./assets/Fonts/IRANSans.ttf'),
+          IRANSansMedium: require('./assets/Fonts/IRANSans_Medium.ttf'),
         });
         // setTimeout(async () => {
         // setIsLoading(false);
         let userToken;
         userToken = null;
+        let userName;
+        userName = null;
 
         try {
-          userToken = await AsyncStorage.getItem("userToken");
-          userName = await AsyncStorage.getItem("userName");
+          userToken = await AsyncStorage.getItem('userToken');
+          userName = await AsyncStorage.getItem('userName');
         } catch (e) {
           console.log(e);
         }
-        console.log("user token: ", userName);
-        dispatch({ type: "RETRIEVE_TOKEN", token: userToken, id: userName });
+        console.log('user token: ', userName);
+        dispatch({ type: 'RETRIEVE_TOKEN', token: userToken, id: userName });
         //   console.log(loginState.userName);
         // }, 5000);
         await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -182,7 +178,7 @@ export default function App() {
   }
   if (loginState.isLoading) {
     return (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
         <ActivityIndicator size="large" />
       </View>
     );
@@ -204,7 +200,7 @@ export default function App() {
                   <Drawer.Screen name="MainPage" component={MainPage} />
                 </Drawer.Navigator>
               ) : (
-                <RootNav></RootNav>
+                <RootNav />
               )}
             </NavigationContainer>
           </NativeBaseProvider>

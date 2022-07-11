@@ -1,11 +1,11 @@
-import { useState, useEffect } from "react";
-import axios from "axios";
+import { useState } from 'react';
+import axios from 'axios';
 
-axios.defaults.baseURL = "https://impartial-picturesque-page.glitch.me/";
+axios.defaults.baseURL = 'https://impartial-picturesque-page.glitch.me/';
 
 const useAxiosSetData = ({ url, method, body = null, headers = null }) => {
   const [response, setResponse] = useState(null);
-  const [error, setError] = useState("");
+  const [error, setError] = useState('');
   const [loading, setLoading] = useState(true);
 
   const sendData = () => {
