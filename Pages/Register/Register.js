@@ -1,6 +1,19 @@
-import { StyleSheet, Text, ImageBackground } from 'react-native';
-import React, { useContext, useEffect, useState } from 'react';
-import { Center, Box, FormControl, Button, VStack, Input } from 'native-base';
+import {
+  StyleSheet,
+  Text,
+  ImageBackground,
+  ActivityIndicator,
+} from 'react-native';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
+import {
+  Center,
+  Box,
+  FormControl,
+  Button,
+  VStack,
+  Input,
+  View,
+} from 'native-base';
 // import { AuthContext } from '../../Helper/AuthContext';
 // import useAxios from "../../Helper/Hooks/useAxiosFetchData";
 import useAxiosSetData from '../../Helper/Hooks/useAxiosSetData';
@@ -13,8 +26,7 @@ export default function Register(props) {
     mobileNumber: '',
   });
 
-  // const [errors, setErrors] = useState([]);
-  // const { login } = useContext(AuthContext);
+  const [isButtonClicked, setIsButtonClicked] = useState(false);
   const { signIn } = useContext(AuthenticationContext);
 
   const onChangeHandler = (name, value) => {
@@ -35,22 +47,22 @@ export default function Register(props) {
       profilePhoto: 'https://api.multiavatar.com/' + inputs.username,
     }),
   });
+  const registerButtonHandler = useCallback(() => {
+    setIsButtonClicked(true);
+    sendData();
+  }, [sendData]);
   useEffect(() => {
     if (response !== null) {
-      // login({
-      //   userId: response._id,
-      //   userName: inputs.username,
-      //   userPhone: inputs.mobileNumber,
-      //   userAvatar: "https://api.multiavatar.com/" + inputs.username,
-      //   userGender: false,
-      // });
-      // navigation.replace("Main");
-      console.log('BSignIn  UserName : ' + inputs.username);
-
       signIn({ userToken: response._id, userName: inputs.username });
     }
-  }, [response]);
-
+  }, [inputs.username, response, signIn]);
+  if (isButtonClicked === true) {
+    return (
+      <View>
+        <ActivityIndicator />
+      </View>
+    );
+  }
   return (
     <ImageBackground
       style={styles.image}
@@ -106,7 +118,7 @@ export default function Register(props) {
               _text={{ style: { fontFamily: 'IRANSansBold', fontSize: 12 } }}
               mt="2"
               colorScheme="indigo"
-              onPress={sendData}
+              onPress={registerButtonHandler}
             >
               ثبت نام
             </Button>

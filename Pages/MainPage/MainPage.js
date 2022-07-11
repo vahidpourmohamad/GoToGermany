@@ -118,11 +118,18 @@ const MainPage = ({ navigation, route }) => {
           </HStack>
         </Center>
         <WordCard />
-        <Center alignItems="center" h="22%" bg="white" rounded="29" shadow={9}>
+        <Center
+          w="80%"
+          alignItems="center"
+          h="22%"
+          bg="white"
+          rounded="29"
+          shadow={9}
+        >
           <HStack
             alignItems="center"
             justifyContent="space-around"
-            w="80%"
+            w="100%"
             h="100%"
           >
             <Circle

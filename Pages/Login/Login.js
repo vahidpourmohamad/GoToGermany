@@ -1,4 +1,9 @@
-import { StyleSheet, Text, ImageBackground } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  ImageBackground,
+  ActivityIndicator,
+} from 'react-native';
 import React, { useContext, useEffect, useState } from 'react';
 import {
   Center,
@@ -9,6 +14,7 @@ import {
   HStack,
   VStack,
   Input,
+  View,
 } from 'native-base';
 // import { AuthContext } from '../../Helper/AuthContext';
 // import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -20,11 +26,9 @@ export default function Login(props) {
   // console.log(props);
 
   const [inputs, setInputs] = useState({ userName: '', userTelephone: '' });
-  // const [userNameCorrect, setUSerNameCorrect] = useState();
+
   const [isButtonClicked, setIsButtonClicked] = useState(false);
   const { signIn } = useContext(AuthenticationContext);
-  // const [userData, setUserData] = useState();
-  // const [newUser, setNewUser] = useState(false);
 
   const { response, sendData } = useAxiosSetData({
     method: 'post',
@@ -41,7 +45,13 @@ export default function Login(props) {
         signIn({ userToken: response._id, userName: inputs.userName });
       }
     }
-  }, [response, isButtonClicked]);
+  }, [
+    response,
+    isButtonClicked,
+    inputs.userTelephone,
+    inputs.userName,
+    signIn,
+  ]);
 
   const loginButtonClick = () => {
     setIsButtonClicked(true);
@@ -50,6 +60,13 @@ export default function Login(props) {
   const onChangeHandler = (name, value) => {
     setInputs({ ...inputs, [name]: value });
   };
+  if (isButtonClicked === true) {
+    return (
+      <View>
+        <ActivityIndicator />
+      </View>
+    );
+  }
   return (
     <ImageBackground
       style={styles.image}
