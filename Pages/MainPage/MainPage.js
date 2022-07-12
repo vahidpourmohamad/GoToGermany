@@ -1,4 +1,6 @@
-import React, { useContext } from 'react';
+// 8123883527
+// rd2ueT
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import {
   VStack,
   Center,
@@ -7,22 +9,99 @@ import {
   IconButton,
   Text,
   Circle,
+  Icon,
 } from 'native-base';
 import {
   StyleSheet,
   View,
   ImageBackground,
   ActivityIndicator,
+  Pressable,
 } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import WordCard from '../../Components/wordCard.js';
 
 import { AuthenticationContext } from '../../Helper/AuthenticationContext.js';
-const MainPage = ({ navigation, route }) => {
-  const { userName, signOut, isLoading } = useContext(AuthenticationContext);
-  // const [loaded, setLoaded] = useState(false);
 
-  if (isLoading === true) {
+import useAxiosFetchData from '../../Helper/Hooks/useAxiosFetchData.js';
+import useAxiosSetData from '../../Helper/Hooks/useAxiosSetData.js';
+const MainPage = ({ navigation, route }) => {
+  const { userName, userToken, signOut, isLoading } = useContext(
+    AuthenticationContext,
+  );
+  console.log('Enter Page');
+
+  const [wordGerman, setWordGerman] = useState();
+  const [wordPersian, setWordPersian] = useState();
+  const [plural, setPlural] = useState();
+  const [wordGender, setWordGender] = useState();
+  const [question, setQuestion] = useState();
+  const [questionId, setQuestionId] = useState();
+  const [correct, setCorrect] = useState();
+
+  const {
+    response: answerResponse,
+    loading: answerLoading,
+    sendData: answerDataSend,
+  } = useAxiosSetData({
+    method: 'post',
+    url: '/userAnswer',
+    headers: JSON.stringify({ accept: '*/*' }),
+    body: JSON.stringify({
+      id: questionId,
+      correct: correct,
+    }),
+  });
+
+  const answerSendDataCallBack = useCallback(() => {
+    answerDataSend();
+  }, [answerDataSend]);
+
+  useEffect(() => {
+    if (answerResponse !== null) {
+      navigation.replace('MainPage');
+      console.log('Replace');
+    }
+  }, [answerResponse, navigation]);
+
+  const { response, loading } = useAxiosFetchData({
+    method: 'post',
+    url: '/getNewWord',
+    headers: JSON.stringify({ accept: '*/*' }),
+    body: JSON.stringify({
+      userId: userToken,
+    }),
+  });
+  useEffect(() => {
+    console.log(response);
+
+    if (response !== undefined && response !== null) {
+      if (response[0] !== undefined) {
+        setWordGerman(response[0].question);
+        console.log(response[0].answer);
+        console.log(response[0]);
+
+        setWordPersian(response[0].answer[0]);
+        setPlural(response[0].answer[1]);
+        setWordGender(response[0].answer[2]);
+        setQuestion(response[0].question);
+        setQuestionId(response[0]._id);
+        console.log(response[0]._id);
+      } else {
+        setWordGerman(response.question);
+        console.log(response.answer);
+        console.log(response);
+        setWordPersian(response.answer[0]);
+        setPlural(response.answer[1]);
+        setWordGender(response.answer[2]);
+        setQuestion(response.question);
+        setQuestionId(response._id);
+        console.log(response._id);
+      }
+    }
+  }, [response]);
+
+  if (isLoading === true || loading || answerLoading) {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
         <ActivityIndicator size="large" />
@@ -71,12 +150,16 @@ const MainPage = ({ navigation, route }) => {
           </HStack>
         </Center>
         <Center w="80%" h="12%" bg="white" rounded="29" shadow={9}>
-          <HStack justifyItems="space-between" w="100%" h="100%">
-            <Center w="33%" h="100%">
-              <IconButton
-                variant="solid"
-                bg="violet.900"
-                icon={<AntDesign name="left" size={24} color="white" />}
+          <HStack ml={2} justifyItems="space-between" w="100%" h="100%">
+            <Center w="15%" h="100%">
+              <Icon
+                as={AntDesign}
+                name="inbox"
+                color="violet.900"
+                size={12}
+                _dark={{
+                  color: 'violet.900',
+                }}
               />
               <Text
                 mt={2}
@@ -85,14 +168,65 @@ const MainPage = ({ navigation, route }) => {
                 قبلی
               </Text>
             </Center>
-            <Center w="33%" h="100%">
-              <IconButton
-                variant="solid"
-                bg="violet.900"
-                icon={<AntDesign name="star" size={24} color="white" />}
-                onPress={() => {
-                  console.log('test');
-                  signOut();
+            <Center w="15%" h="100%">
+              <Icon
+                as={AntDesign}
+                name="inbox"
+                color="violet.900"
+                size={12}
+                _dark={{
+                  color: 'violet.900',
+                }}
+              />
+              <Text
+                mt={2}
+                style={{ fontFamily: 'IRANSansMedium', fontSize: 14 }}
+              >
+                قبلی
+              </Text>
+            </Center>
+            <Center w="15%" h="100%">
+              <Icon
+                as={AntDesign}
+                name="inbox"
+                color="violet.900"
+                size={12}
+                _dark={{
+                  color: 'violet.900',
+                }}
+              />
+              <Text
+                mt={2}
+                style={{ fontFamily: 'IRANSansMedium', fontSize: 14 }}
+              >
+                قبلی
+              </Text>
+            </Center>
+            <Center w="15%" h="100%">
+              <Icon
+                as={AntDesign}
+                name="inbox"
+                color="violet.900"
+                size={12}
+                _dark={{
+                  color: 'violet.900',
+                }}
+              />
+              <Text
+                mt={2}
+                style={{ fontFamily: 'IRANSansMedium', fontSize: 14 }}
+              >
+                قبلی
+              </Text>
+            </Center>
+            <Center w="15%" h="100%">
+              <Icon
+                as={AntDesign}
+                name="inbox"
+                color="violet.900"
+                size={12}
+                _dark={{
+                  color: 'violet.900',
                 }}
               />
               <Text
@@ -102,11 +236,15 @@ const MainPage = ({ navigation, route }) => {
                 پاسخ
               </Text>
             </Center>
-            <Center w="34%" h="100%">
-              <IconButton
-                variant="solid"
-                bg="violet.900"
-                icon={<AntDesign name="right" size={24} color="white" />}
+            <Center w="25%" h="100%">
+              <Icon
+                as={AntDesign}
+                name="inbox"
+                color="violet.900"
+                size={12}
+                _dark={{
+                  color: 'violet.900',
+                }}
               />
               <Text
                 mt={2}
@@ -117,7 +255,18 @@ const MainPage = ({ navigation, route }) => {
             </Center>
           </HStack>
         </Center>
-        <WordCard />
+        {/* const wordGerman = ' Tee';
+  const wordPersian = 'چای';
+  const plural = 'Tees';
+  const wordGender = 'Der';
+  const question = 'چای'; */}
+        <WordCard
+          wordGerman={wordGerman}
+          wordPersian={wordPersian}
+          plural={plural}
+          wordGender={wordGender}
+          question={question}
+        />
         <Center
           w="80%"
           alignItems="center"
@@ -132,22 +281,43 @@ const MainPage = ({ navigation, route }) => {
             w="100%"
             h="100%"
           >
-            <Circle
-              size="120px"
-              bg="red.500"
-              borderWidth={4}
-              borderColor="red.700"
+            <Pressable
+              onPress={() => {
+                setCorrect(false);
+                answerSendDataCallBack();
+                console.log('touch');
+              }}
             >
-              <AntDesign name="close" size={45} color="white" />
-            </Circle>
-            <Circle
-              size="120px"
-              bg="success.500"
-              borderWidth={4}
-              borderColor="success.700"
+              <Circle
+                size="120px"
+                bg="red.500"
+                borderWidth={4}
+                borderColor="red.700"
+              >
+                <AntDesign name="close" size={45} color="white" />
+              </Circle>
+            </Pressable>
+            <Pressable
+              onPress={() => {
+                setCorrect(false);
+                answerSendDataCallBack();
+                console.log('touch');
+              }}
             >
-              <AntDesign name="check" size={45} color="white" />
-            </Circle>
+              <Circle
+                size="120px"
+                bg="success.500"
+                borderWidth={4}
+                borderColor="success.700"
+                onPress={() => {
+                  setCorrect(true);
+                  answerSendDataCallBack();
+                  console.log('touch');
+                }}
+              >
+                <AntDesign name="check" size={45} color="white" />
+              </Circle>
+            </Pressable>
           </HStack>
         </Center>
       </VStack>

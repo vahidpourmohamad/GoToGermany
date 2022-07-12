@@ -6,9 +6,10 @@ axios.defaults.baseURL = 'https://impartial-picturesque-page.glitch.me/';
 const useAxiosSetData = ({ url, method, body = null, headers = null }) => {
   const [response, setResponse] = useState(null);
   const [error, setError] = useState('');
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const sendData = () => {
+    setLoading(true);
     console.log(body);
     axios[method](url, JSON.parse(body))
       .then((res) => {

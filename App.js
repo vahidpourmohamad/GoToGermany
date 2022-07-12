@@ -16,6 +16,7 @@ import RootNav from './Helper/RootNav.js';
 import { AuthenticationContext } from './Helper/AuthenticationContext.js';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import DrawerContent from './Pages/DrawerContent.js/DrawerContent.js';
+import MainStackNav from './Pages/MainPage/MainStackNav.js';
 // const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
 const theme = extendTheme({
@@ -185,7 +186,6 @@ export default function App() {
   }
   return (
     <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
-      {/* <AppContextProvider> */}
       <AuthenticationContext.Provider value={authContext}>
         <ErrorBoundary>
           <NativeBaseProvider theme={theme}>
@@ -197,7 +197,10 @@ export default function App() {
                   }}
                   drawerContent={(props) => <DrawerContent {...props} />}
                 >
-                  <Drawer.Screen name="MainPage" component={MainPage} />
+                  <Drawer.Screen
+                    name="MainPageStack"
+                    component={MainStackNav}
+                  />
                 </Drawer.Navigator>
               ) : (
                 <RootNav />
@@ -206,7 +209,6 @@ export default function App() {
           </NativeBaseProvider>
         </ErrorBoundary>
       </AuthenticationContext.Provider>
-      {/* </AppContextProvider> */}
     </View>
   );
 }

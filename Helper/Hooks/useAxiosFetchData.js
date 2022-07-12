@@ -9,20 +9,23 @@ const useAxiosFetchData = ({ url, method, body = null, headers = null }) => {
   const [loading, setLoading] = useState(true);
 
   const fetchData = useCallback(() => {
-    axios[method](url, JSON.parse(headers), JSON.parse(body))
+    axios[method](url, JSON.parse(body))
       .then((res) => {
         setResponse(res.data);
       })
       .catch((err) => {
+        console.log(err);
+
         setError(err);
       })
       .finally(() => {
         setLoading(false);
       });
-  }, [body, headers, method, url]);
+  }, [body, method, url]);
 
   useEffect(() => {
     fetchData();
+    console.log('Fetch Data From Url : ' + url);
   }, [method, url, body, headers, fetchData]);
 
   return { response, error, loading };

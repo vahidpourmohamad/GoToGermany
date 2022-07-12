@@ -1,26 +1,7 @@
 import React from 'react';
 import { useState } from 'react';
-import {
-  // Box,
-  // VStack,
-  Center,
-  // HStack,
-  // Avatar,
-  // extendTheme,
-  // IconButton,
-  // Image,
-  // Circle,
-  Pressable,
-} from 'native-base';
-// import { StatusBar } from 'expo-status-bar';
-import {
-  StyleSheet,
-  View,
-  // ImageBackground,
-  // TouchableOpacity,
-  Text,
-} from 'react-native';
-// import { AntDesign } from '@expo/vector-icons';
+import { Center, Pressable } from 'native-base';
+import { StyleSheet, View, Text } from 'react-native';
 
 import Animated, {
   useSharedValue,
@@ -32,14 +13,10 @@ import Animated, {
   // withSpring,
 } from 'react-native-reanimated';
 
-function WordCard() {
+function WordCard(props) {
   const [answerShow, setAnswerShow] = useState(false);
+  const { wordGerman, wordPersian, plural, wordGender, question } = props;
   const animation = useSharedValue(0);
-  const wordGerman = ' Tee';
-  const wordPersian = 'چای';
-  const plural = 'Tees';
-  const wordGender = 'Der';
-  const question = 'چای';
 
   const cardFlip = useAnimatedStyle(() => {
     return {
