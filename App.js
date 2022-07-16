@@ -17,6 +17,7 @@ import { AuthenticationContext } from './Helper/AuthenticationContext.js';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import DrawerContent from './Pages/DrawerContent.js/DrawerContent.js';
 import MainStackNav from './Pages/MainPage/MainStackNav.js';
+import TabNavigation from './Navigation/TabNavigation.js';
 // const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
 const theme = extendTheme({
@@ -198,8 +199,8 @@ export default function App() {
                   drawerContent={(props) => <DrawerContent {...props} />}
                 >
                   <Drawer.Screen
-                    name="MainPageStack"
-                    component={MainStackNav}
+                    name="MainPageNavigation"
+                    component={TabNavigation}
                   />
                 </Drawer.Navigator>
               ) : (

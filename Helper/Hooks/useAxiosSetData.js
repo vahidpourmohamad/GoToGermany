@@ -10,7 +10,7 @@ const useAxiosSetData = ({ url, method, body = null, headers = null }) => {
 
   const sendData = () => {
     setLoading(true);
-    console.log(body);
+    console.log('Data Send Via ' + url + ' Body' + body);
     axios[method](url, JSON.parse(body))
       .then((res) => {
         setResponse(res.data);

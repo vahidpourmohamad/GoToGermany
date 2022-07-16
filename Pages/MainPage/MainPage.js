@@ -30,14 +30,32 @@ const MainPage = ({ navigation, route }) => {
     AuthenticationContext,
   );
   console.log('Enter Page');
-
+  const boxesInitialState = {
+    boxOne: 0,
+    boxTwo: 0,
+    boxThree: 0,
+    boxFour: 0,
+    boxFive: 0,
+    wordCount: 0,
+    boxInfinite: 0,
+  };
   const [wordGerman, setWordGerman] = useState();
   const [wordPersian, setWordPersian] = useState();
   const [plural, setPlural] = useState();
   const [wordGender, setWordGender] = useState();
   const [question, setQuestion] = useState();
   const [questionId, setQuestionId] = useState();
-  const [correct, setCorrect] = useState();
+  const [correct, setCorrect] = useState(false);
+  const [box, setBox] = useState(1);
+  const [boxes, setBoxes] = useState(boxesInitialState);
+  const { response: boxResponse, loading: boxLoadding } = useAxiosFetchData({
+    method: 'post',
+    url: '/userWordReport',
+    headers: JSON.stringify({ accept: '*/*' }),
+    body: JSON.stringify({
+      userId: userToken,
+    }),
+  });
 
   const {
     response: answerResponse,
@@ -52,6 +70,14 @@ const MainPage = ({ navigation, route }) => {
       correct: correct,
     }),
   });
+
+  useEffect(() => {
+    console.log(boxResponse);
+
+    if (boxResponse !== undefined && boxResponse !== null) {
+      setBoxes(boxResponse);
+    }
+  }, [boxResponse]);
 
   const answerSendDataCallBack = useCallback(() => {
     answerDataSend();
@@ -86,6 +112,7 @@ const MainPage = ({ navigation, route }) => {
         setWordGender(response[0].answer[2]);
         setQuestion(response[0].question);
         setQuestionId(response[0]._id);
+        setBox(response[0].box);
         console.log(response[0]._id);
       } else {
         setWordGerman(response.question);
@@ -97,6 +124,7 @@ const MainPage = ({ navigation, route }) => {
         setQuestion(response.question);
         setQuestionId(response._id);
         console.log(response._id);
+        setBox(response.box);
       }
     }
   }, [response]);
@@ -127,11 +155,8 @@ const MainPage = ({ navigation, route }) => {
                 >
                   {userName}
                 </Text>
-                <Text
-                  mt={2}
-                  style={{ fontFamily: 'IRANSansMedium', fontSize: 14 }}
-                >
-                  تعداد کلمات امروز
+                <Text style={{ fontFamily: 'IRANSansMedium', fontSize: 14 }}>
+                  تعداد کلمات : {boxes.wordCount}
                 </Text>
                 <Text style={{ fontFamily: 'IRANSansLight', fontSize: 12 }}>
                   مرور امروز
@@ -152,105 +177,130 @@ const MainPage = ({ navigation, route }) => {
         <Center w="80%" h="12%" bg="white" rounded="29" shadow={9}>
           <HStack ml={2} justifyItems="space-between" w="100%" h="100%">
             <Center w="15%" h="100%">
-              <Icon
-                as={AntDesign}
-                name="inbox"
-                color="violet.900"
-                size={12}
-                _dark={{
-                  color: 'violet.900',
-                }}
-              />
-              <Text
-                mt={2}
-                style={{ fontFamily: 'IRANSansMedium', fontSize: 14 }}
-              >
-                قبلی
+              <View>
+                <Icon
+                  as={AntDesign}
+                  name="inbox"
+                  color="violet.900"
+                  size={12}
+                  _dark={{
+                    color: 'violet.900',
+                  }}
+                />
+                <Text
+                  style={{
+                    position: 'absolute',
+                    top: 20,
+                    left: 18,
+                    fontSize: 8,
+                    fontFamily: 'IRANSansMedium',
+                  }}
+                >
+                  اول
+                </Text>
+              </View>
+              <Text style={{ fontFamily: 'IRANSansMedium', fontSize: 14 }}>
+                {boxes.boxOne}
               </Text>
             </Center>
             <Center w="15%" h="100%">
-              <Icon
-                as={AntDesign}
-                name="inbox"
-                color="violet.900"
-                size={12}
-                _dark={{
-                  color: 'violet.900',
-                }}
-              />
-              <Text
-                mt={2}
-                style={{ fontFamily: 'IRANSansMedium', fontSize: 14 }}
-              >
-                قبلی
+              <View>
+                <Icon as={AntDesign} name="inbox" color="red.500" size={12} />
+                <Text
+                  style={{
+                    position: 'absolute',
+                    top: 18,
+                    left: 18,
+                    fontSize: 8,
+                    fontFamily: 'IRANSansMedium',
+                  }}
+                >
+                  دوم
+                </Text>
+              </View>
+              <Text style={{ fontFamily: 'IRANSansMedium', fontSize: 14 }}>
+                {boxes.boxTwo}
               </Text>
             </Center>
             <Center w="15%" h="100%">
-              <Icon
-                as={AntDesign}
-                name="inbox"
-                color="violet.900"
-                size={12}
-                _dark={{
-                  color: 'violet.900',
-                }}
-              />
-              <Text
-                mt={2}
-                style={{ fontFamily: 'IRANSansMedium', fontSize: 14 }}
-              >
-                قبلی
+              <View>
+                <Icon
+                  as={AntDesign}
+                  name="inbox"
+                  color="yellow.500"
+                  size={12}
+                />
+                <Text
+                  style={{
+                    position: 'absolute',
+                    top: 18,
+                    left: 18,
+                    fontSize: 8,
+                    fontFamily: 'IRANSansMedium',
+                  }}
+                >
+                  سوم
+                </Text>
+              </View>
+              <Text style={{ fontFamily: 'IRANSansMedium', fontSize: 14 }}>
+                {boxes.boxThree}
               </Text>
             </Center>
             <Center w="15%" h="100%">
-              <Icon
-                as={AntDesign}
-                name="inbox"
-                color="violet.900"
-                size={12}
-                _dark={{
-                  color: 'violet.900',
-                }}
-              />
-              <Text
-                mt={2}
-                style={{ fontFamily: 'IRANSansMedium', fontSize: 14 }}
-              >
-                قبلی
+              <View>
+                <Icon as={AntDesign} name="inbox" color="blue.500" size={12} />
+                <Text
+                  style={{
+                    position: 'absolute',
+                    top: 19,
+                    left: 15,
+                    fontSize: 8,
+                    fontFamily: 'IRANSansMedium',
+                  }}
+                >
+                  چهارم
+                </Text>
+              </View>
+              <Text style={{ fontFamily: 'IRANSansMedium', fontSize: 14 }}>
+                {boxes.boxFour}
               </Text>
             </Center>
             <Center w="15%" h="100%">
-              <Icon
-                as={AntDesign}
-                name="inbox"
-                color="violet.900"
-                size={12}
-                _dark={{
-                  color: 'violet.900',
-                }}
-              />
-              <Text
-                mt={2}
-                style={{ fontFamily: 'IRANSansMedium', fontSize: 14 }}
-              >
-                پاسخ
+              <View>
+                <Icon as={AntDesign} name="inbox" color="green.500" size={12} />
+                <Text
+                  style={{
+                    position: 'absolute',
+                    top: 19,
+                    left: 15,
+                    fontSize: 8,
+                    fontFamily: 'IRANSansMedium',
+                  }}
+                >
+                  پنجم
+                </Text>
+              </View>
+              <Text style={{ fontFamily: 'IRANSansMedium', fontSize: 14 }}>
+                {boxes.boxFive}
               </Text>
             </Center>
             <Center w="25%" h="100%">
-              <Icon
-                as={AntDesign}
-                name="inbox"
-                color="violet.900"
-                size={12}
-                _dark={{
-                  color: 'violet.900',
-                }}
-              />
-              <Text
-                mt={2}
-                style={{ fontFamily: 'IRANSansMedium', fontSize: 14 }}
-              >
-                بعدی
+              <View>
+                <Icon as={AntDesign} name="inbox" color="cyan.500" size={12} />
+                <Text
+                  style={{
+                    position: 'absolute',
+                    top: 20,
+                    left: 15,
+                    fontSize: 8,
+                    fontFamily: 'IRANSansMedium',
+                  }}
+                >
+                  ششم
+                </Text>
+              </View>
+              <Text style={{ fontFamily: 'IRANSansMedium', fontSize: 14 }}>
+                {boxes.boxInfinite}
               </Text>
             </Center>
           </HStack>

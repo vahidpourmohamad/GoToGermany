@@ -14,7 +14,7 @@ import Animated, {
 } from 'react-native-reanimated';
 
 function WordCard(props) {
-  const [answerShow, setAnswerShow] = useState(false);
+  const [answerShow, setAnswerShow] = useState(true);
   const { wordGerman, wordPersian, plural, wordGender, question } = props;
   const animation = useSharedValue(0);
 
