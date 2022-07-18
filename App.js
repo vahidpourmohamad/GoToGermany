@@ -7,7 +7,7 @@ import { NativeBaseProvider, extendTheme } from 'native-base';
 import * as Font from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 
-import MainPage from './Pages/MainPage/MainPage.js';
+// import MainPage from './Pages/MainPage/MainPage.js';
 import ErrorBoundary from './Helper/ErrorBoundry.js';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -16,7 +16,7 @@ import RootNav from './Helper/RootNav.js';
 import { AuthenticationContext } from './Helper/AuthenticationContext.js';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import DrawerContent from './Pages/DrawerContent.js/DrawerContent.js';
-import MainStackNav from './Pages/MainPage/MainStackNav.js';
+// import MainStackNav from './Pages/MainPage/MainStackNav.js';
 import TabNavigation from './Navigation/TabNavigation.js';
 // const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();

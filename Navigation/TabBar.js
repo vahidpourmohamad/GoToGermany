@@ -2,21 +2,29 @@ import { AntDesign } from '@expo/vector-icons';
 import { Icon } from 'native-base';
 import React from 'react';
 
-import { View, Pressable, Dimensions, StyleSheet } from 'react-native';
+import { View, Pressable, StyleSheet } from 'react-native';
 
-const { width } = Dimensions.get('window');
+// const { width } = Dimensions.get('window');
 
 const TabBar = ({ state, descriptors, navigation }) => {
   return (
     <View style={styles.mainContainer}>
       {state.routes.map((route, index) => {
         const { options } = descriptors[route.key];
-        const label =
-          options.tabBarLabel !== undefined
-            ? options.tabBarLabel
-            : options.title !== undefined
-            ? options.title
-            : route.name;
+        let iconColor = 'gray.900';
+        switch (route.name) {
+          case 'home':
+            iconColor = 'black';
+            break;
+          case 'videocamera':
+            iconColor = 'red.500';
+            break;
+          case 'book':
+            iconColor = 'yellow.500';
+            break;
+          default:
+            break;
+        }
 
         const isFocused = state.index === index;
 
@@ -52,7 +60,7 @@ const TabBar = ({ state, descriptors, navigation }) => {
                 <Icon
                   as={AntDesign}
                   name={route.name}
-                  color="gray.700"
+                  color={iconColor}
                   size={isFocused ? 12 : 8}
                 />
               </View>
@@ -72,11 +80,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     // position: 'absolute',
     width: '100%',
-    height: '8%',
+    height: '6%',
     // marginTop: 5,
     backgroundColor: 'white',
     // borderRadius: 29,
     // marginHorizontal: width * 0.05,
+    borderTopWidth: 1,
   },
   mainItemContainer: {
     flex: 1,

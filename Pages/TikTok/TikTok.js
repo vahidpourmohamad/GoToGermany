@@ -1,13 +1,8 @@
-import {
-  Dimensions,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import { Dimensions, StyleSheet, Text, View } from 'react-native';
 import React, { useState } from 'react';
 import { Video } from 'expo-av';
 import { LinearGradient } from 'expo-linear-gradient';
+import GestureRecognizer from 'react-native-swipe-gestures';
 
 const { height } = Dimensions.get('window');
 export default function TikTok({ navigation }) {
@@ -44,34 +39,56 @@ export default function TikTok({ navigation }) {
 
     return unsubscribe;
   }, [navigation]);
-
+  const config = {
+    velocityThreshold: 0.3,
+    directionalOffsetThreshold: 80,
+  };
+  const onSwipeRight = () => {
+    console.log('Swipe Right');
+    navigation.jumpTo('home');
+  };
+  const onSwipeLeft = () => {
+    console.log('Swipe Right');
+    navigation.jumpTo('book');
+  };
   return (
-    <View style={styles.container}>
-      <Video
-        ref={video}
-        shouldPlay
-        style={styles.backgroundVideo}
-        source={require('../../assets/test.mp4')}
-        //useNativeControls
-        resizeMode="cover"
-        isLooping
-        onPlaybackStatusUpdate={(status) => setStatus(() => status)}
-      />
-      <View style={styles.onTopView}>
-        <LinearGradient
-          colors={['rgba(40,40,40,0.8)', 'transparent', 'transparent']}
-        >
-          <View style={styles.onTopContent}>
-            <Text style={styles.authorTextOnContent}>
-              {contentOnTop.author}
-            </Text>
-            <Text style={styles.mainTextOnContent}>
-              {contentOnTop.mainText}
-            </Text>
-          </View>
-        </LinearGradient>
+    <GestureRecognizer
+      // onSwipe={(direction, state) => this.onSwipe(direction, state)}
+      onSwipeRight={onSwipeRight}
+      onSwipeLeft={onSwipeLeft}
+      config={config}
+      style={{
+        flex: 1,
+        // backgroundColor: this.state.backgroundColor,
+      }}
+    >
+      <View style={styles.container}>
+        <Video
+          ref={video}
+          shouldPlay
+          style={styles.backgroundVideo}
+          source={require('../../assets/test.mp4')}
+          //useNativeControls
+          resizeMode="cover"
+          isLooping
+          onPlaybackStatusUpdate={(status) => setStatus(() => status)}
+        />
+        <View style={styles.onTopView}>
+          <LinearGradient
+            colors={['rgba(40,40,40,0.8)', 'transparent', 'transparent']}
+          >
+            <View style={styles.onTopContent}>
+              <Text style={styles.authorTextOnContent}>
+                {contentOnTop.author}
+              </Text>
+              <Text style={styles.mainTextOnContent}>
+                {contentOnTop.mainText}
+              </Text>
+            </View>
+          </LinearGradient>
+        </View>
       </View>
-    </View>
+    </GestureRecognizer>
   );
 }
 var styles = StyleSheet.create({
