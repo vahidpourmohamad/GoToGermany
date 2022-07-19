@@ -18,6 +18,7 @@ import {
 // import useAxios from "../../Helper/Hooks/useAxiosFetchData";
 import useAxiosSetData from '../../Helper/Hooks/useAxiosSetData';
 import { AuthenticationContext } from '../../Helper/AuthenticationContext';
+import LoadingIndicator from '../../Components/LoadingIndicator';
 
 export default function Register(props) {
   // const { navigation, route } = props;
@@ -57,11 +58,7 @@ export default function Register(props) {
     }
   }, [inputs.username, response, signIn]);
   if (isButtonClicked === true) {
-    return (
-      <View>
-        <ActivityIndicator />
-      </View>
-    );
+    return <LoadingIndicator />;
   }
   return (
     <ImageBackground
@@ -73,13 +70,6 @@ export default function Register(props) {
     >
       <Center w="100%">
         <Box bg="white" rounded="29" safeArea p="2" py="8" w="90%" maxW="290">
-          <Text
-            color="coolGray.800"
-            style={{ fontFamily: 'IRANSansBold', fontSize: 26 }}
-            alignSelf="Center"
-          >
-            به اپلیکیشن بریم آلمان خوش آمدید
-          </Text>
           <Text
             mt="1"
             _dark={{

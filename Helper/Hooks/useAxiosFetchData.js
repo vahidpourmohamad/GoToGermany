@@ -25,7 +25,7 @@ const useAxiosFetchData = ({ url, method, body = null, headers = null }) => {
 
   useEffect(() => {
     fetchData();
-    console.log('Fetch Data From Url : ' + url);
+    //console.log('Fetch Data From Url : ' + url);
   }, [method, url, body, headers, fetchData]);
 
   return { response, error, loading };

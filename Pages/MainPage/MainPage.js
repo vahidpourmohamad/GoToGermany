@@ -25,11 +25,11 @@ import { AuthenticationContext } from '../../Helper/AuthenticationContext.js';
 
 import useAxiosFetchData from '../../Helper/Hooks/useAxiosFetchData.js';
 import useAxiosSetData from '../../Helper/Hooks/useAxiosSetData.js';
+import LoadingIndicator from '../../Components/LoadingIndicator.js';
+
 const MainPage = ({ navigation, route }) => {
-  const { userName, userToken, signOut, isLoading } = useContext(
-    AuthenticationContext,
-  );
-  console.log('Enter Page');
+  const { userName, userToken, isLoading } = useContext(AuthenticationContext);
+  ////console.log(navigation);
   const boxesInitialState = {
     boxOne: 0,
     boxTwo: 0,
@@ -45,7 +45,7 @@ const MainPage = ({ navigation, route }) => {
   const [wordGender, setWordGender] = useState();
   const [question, setQuestion] = useState();
   const [questionId, setQuestionId] = useState();
-  const [correct, setCorrect] = useState(false);
+  const [correct, setCorrect] = useState();
   const [box, setBox] = useState(1);
   const [boxes, setBoxes] = useState(boxesInitialState);
   const { response: boxResponse, loading: boxLoadding } = useAxiosFetchData({
@@ -72,8 +72,6 @@ const MainPage = ({ navigation, route }) => {
   });
 
   useEffect(() => {
-    console.log(boxResponse);
-
     if (boxResponse !== undefined && boxResponse !== null) {
       setBoxes(boxResponse);
     }
@@ -85,10 +83,15 @@ const MainPage = ({ navigation, route }) => {
 
   useEffect(() => {
     if (answerResponse !== null) {
-      navigation.replace('MainPage');
-      console.log('Replace');
+      navigation.replace('MainPageStackHome');
     }
   }, [answerResponse, navigation]);
+
+  useEffect(() => {
+    if (correct != null && correct !== undefined) {
+      answerSendDataCallBack();
+    }
+  }, [correct]);
 
   const { response, loading } = useAxiosFetchData({
     method: 'post',
@@ -98,43 +101,41 @@ const MainPage = ({ navigation, route }) => {
       userId: userToken,
     }),
   });
+  const [wordEnd, setWordEnd] = useState(true);
   useEffect(() => {
-    console.log(response);
-
     if (response !== undefined && response !== null) {
-      if (response[0] !== undefined) {
-        setWordGerman(response[0].question);
-        console.log(response[0].answer);
-        console.log(response[0]);
+      // console.log(response);
 
-        setWordPersian(response[0].answer[0]);
-        setPlural(response[0].answer[1]);
-        setWordGender(response[0].answer[2]);
-        setQuestion(response[0].question);
-        setQuestionId(response[0]._id);
-        setBox(response[0].box);
-        console.log(response[0]._id);
+      if (response.toString() !== '-1') {
+        if (response[0] !== undefined) {
+          setWordEnd(false);
+          setWordGerman(response[0].question);
+          setWordPersian(response[0].answer[0]);
+          setPlural(response[0].answer[1]);
+          setWordGender(response[0].answer[2]);
+          setQuestion(response[0].question);
+          setQuestionId(response[0]._id);
+          setBox(response[0].box);
+        } else {
+          setWordEnd(false);
+          setWordGerman(response.question);
+          setWordPersian(response.answer[0]);
+          setPlural(response.answer[1]);
+          setWordGender(response.answer[2]);
+          setQuestion(response.question);
+          setQuestionId(response._id);
+          setBox(response.box);
+        }
       } else {
-        setWordGerman(response.question);
-        console.log(response.answer);
-        console.log(response);
-        setWordPersian(response.answer[0]);
-        setPlural(response.answer[1]);
-        setWordGender(response.answer[2]);
-        setQuestion(response.question);
-        setQuestionId(response._id);
-        console.log(response._id);
-        setBox(response.box);
+        console.log('Word Store is Empty');
+        setWordEnd(true);
+        navigation.replace('MainPageStackWordEnd');
       }
     }
-  }, [response]);
+  }, [navigation, response]);
 
-  if (isLoading === true || loading || answerLoading) {
-    return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <ActivityIndicator size="large" />
-      </View>
-    );
+  if (isLoading === true || loading || answerLoading || wordEnd) {
+    return <LoadingIndicator />;
   }
   return (
     <ImageBackground
@@ -305,11 +306,7 @@ const MainPage = ({ navigation, route }) => {
             </Center>
           </HStack>
         </Center>
-        {/* const wordGerman = ' Tee';
-  const wordPersian = 'چای';
-  const plural = 'Tees';
-  const wordGender = 'Der';
-  const question = 'چای'; */}
+
         <WordCard
           wordGerman={wordGerman}
           wordPersian={wordPersian}
@@ -334,8 +331,8 @@ const MainPage = ({ navigation, route }) => {
             <Pressable
               onPress={() => {
                 setCorrect(false);
-                answerSendDataCallBack();
-                console.log('touch');
+                //answerSendDataCallBack(false);
+                //console.log('touch');
               }}
             >
               <Circle
@@ -349,9 +346,10 @@ const MainPage = ({ navigation, route }) => {
             </Pressable>
             <Pressable
               onPress={() => {
-                setCorrect(false);
-                answerSendDataCallBack();
-                console.log('touch');
+                setCorrect(true);
+                //if()
+                //   answerSendDataCallBack(true);
+                //console.log('touch');
               }}
             >
               <Circle
@@ -359,11 +357,6 @@ const MainPage = ({ navigation, route }) => {
                 bg="success.500"
                 borderWidth={4}
                 borderColor="success.700"
-                onPress={() => {
-                  setCorrect(true);
-                  answerSendDataCallBack();
-                  console.log('touch');
-                }}
               >
                 <AntDesign name="check" size={45} color="white" />
               </Circle>

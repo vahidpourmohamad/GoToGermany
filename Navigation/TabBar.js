@@ -3,6 +3,7 @@ import { Icon } from 'native-base';
 import React from 'react';
 
 import { View, Pressable, StyleSheet } from 'react-native';
+import { Circle } from 'react-native-svg';
 
 // const { width } = Dimensions.get('window');
 
@@ -44,8 +45,6 @@ const TabBar = ({ state, descriptors, navigation }) => {
             <Pressable
               onPress={onPress}
               style={{
-                // backgroundColor: isFocused ? 'violet' : 'gray',
-                // size: isFocused ? 20 : 30,
                 borderRadius: 0,
               }}
             >
@@ -55,6 +54,8 @@ const TabBar = ({ state, descriptors, navigation }) => {
                   alignItems: 'center',
                   flex: 1,
                   padding: 0,
+                  backgroundColor: 'white',
+                  borderColor: 'black',
                 }}
               >
                 <Icon

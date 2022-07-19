@@ -1,30 +1,53 @@
-import { Pressable, Text } from 'react-native';
-import React, { useState } from 'react';
+import { ActivityIndicator, Pressable, Text } from 'react-native';
+import React, { useEffect, useState } from 'react';
 import {
   AspectRatio,
   Box,
-  Heading,
   HStack,
   Image,
   ScrollView,
   Stack,
+  View,
 } from 'native-base';
 
 import { AntDesign } from '@expo/vector-icons';
+import useAxiosFetchData from '../../Helper/Hooks/useAxiosFetchData';
+import LoadingIndicator from '../../Components/LoadingIndicator';
 
 export default function GermanContentItem({ route, navigation }) {
   const { id } = route.params;
 
-  const initialContentState = {
-    mainContent: 'متن پیشفرض ',
-    imageUri: {
-      uri: 'https://www.holidify.com/images/cmsuploads/compressed/Bangalore_citycover_20190613234056.jpg',
-    },
-    date: 'امروز',
-    author: 'وحید',
-    title: 'بدون تیتر ',
+  const contentDataInitialize = {
+    _id: '',
+    imageUri: '',
+    title: '',
+    authour: '',
+    mainContent: '',
+    type: 1,
+    creataionDate: '',
   };
-  const [content, setContet] = useState(initialContentState);
+  const [content, setContent] = useState(contentDataInitialize);
+
+  const { response, loading } = useAxiosFetchData({
+    method: 'post',
+    url: '/germanContentSelect',
+    headers: JSON.stringify({ accept: '*/*' }),
+    body: JSON.stringify({
+      id: id,
+    }),
+  });
+  useEffect(() => {
+    if (response !== undefined && response !== null) {
+      //console.log(response);
+
+      setContent(response);
+      //console.log(content);
+    }
+  }, [response]);
+
+  if (loading === true) {
+    return <LoadingIndicator />;
+  }
   return (
     <Box safeArea>
       <Box
@@ -65,12 +88,7 @@ export default function GermanContentItem({ route, navigation }) {
           >
             <Box>
               <AspectRatio w="100%" ratio={16 / 9}>
-                <Image
-                  source={{
-                    uri: 'https://www.holidify.com/images/cmsuploads/compressed/Bangalore_citycover_20190613234056.jpg',
-                  }}
-                  alt="image"
-                />
+                <Image source={{ uri: content[0].imageUri }} alt="image" />
               </AspectRatio>
             </Box>
             <Stack p="4" space={3}>
@@ -86,19 +104,19 @@ export default function GermanContentItem({ route, navigation }) {
                     fontSize: 10,
                   }}
                 >
-                  {content.date}
+                  {content[0].creataionDate}
                 </Text>
                 <Text style={{ fontFamily: 'IRANSansRegular', fontSize: 10 }}>
-                  {content.author}
+                  {content[0].authour}
                 </Text>
               </HStack>
               <Stack space={2}>
                 <Text style={{ fontFamily: 'IRANSansBold', fontSize: 18 }}>
-                  {content.title}
+                  {content[0].title}
                 </Text>
               </Stack>
               <Text style={{ fontFamily: 'IRANSansMedium', fontSize: 14 }}>
-                {content.mainContent}
+                {content[0].mainContent}
               </Text>
             </Stack>
           </Box>

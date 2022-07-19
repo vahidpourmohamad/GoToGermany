@@ -1,6 +1,7 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import MainPage from './MainPage';
+import WordEnd from './WordEnd';
 
 export default function MainStackNav() {
   const stack = createNativeStackNavigator();
@@ -10,7 +11,8 @@ export default function MainStackNav() {
         headerShown: false,
       }}
     >
-      <stack.Screen name="MainPage" component={MainPage} />
+      <stack.Screen name="MainPageStackHome" component={MainPage} />
+      <stack.Screen name="MainPageStackWordEnd" component={WordEnd} />
     </stack.Navigator>
   );
 }

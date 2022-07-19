@@ -2,7 +2,7 @@
 import React from 'react';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 // import { DrawerActions } from '@react-navigation/native';
-import MainPage from './MainPage';
+// import MainPage from './MainPage';
 import TabNavigation from '../../Navigation/TabNavigation';
 
 export default function DrawerNav() {

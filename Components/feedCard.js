@@ -14,7 +14,7 @@ import {
 } from 'native-base';
 const { width } = Dimensions.get('window');
 export default function FeedCard(props) {
-  const { text, title, imageUri, id, date, type } = props.item;
+  const { mainContent, title, imageUri, id, date, type } = props.item;
   const { onPress } = props;
   let contentTypeColor = '';
   let contentType = 'مهم';
@@ -94,7 +94,7 @@ export default function FeedCard(props) {
                 {title}
               </Heading>
             </Stack>
-            <Text fontWeight="400">{text}</Text>
+            <Text fontWeight="400">{mainContent}</Text>
             <HStack
               alignItems="center"
               space={4}

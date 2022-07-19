@@ -9,7 +9,7 @@ export default function LoadingPages({ navigation }) {
   const getDataCallBack = useCallback(() => {
     async () => {
       try {
-        console.log('ok1');
+        //console.log('ok1');
 
         let userId = await AsyncStorage.getItem('@userId');
         let userName = await AsyncStorage.getItem('@userName');
@@ -25,7 +25,7 @@ export default function LoadingPages({ navigation }) {
             userAvatar,
             userGender,
           };
-          console.log(loadedUserData);
+          //console.log(loadedUserData);
 
           login(loadedUserData);
           navigation.replace('MainDrawer');
@@ -33,7 +33,7 @@ export default function LoadingPages({ navigation }) {
           navigation.replace('Login');
         }
       } catch (e) {
-        console.log(e);
+        //console.log(e);
       }
     };
   }, [login, navigation]);

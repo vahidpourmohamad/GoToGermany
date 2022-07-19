@@ -38,7 +38,7 @@ function WordCard(props) {
         if (finished) {
           // animation.value=0;
         } else {
-          console.log('ANIMATION GOT CANCELLED');
+          //console.log('ANIMATION GOT CANCELLED');
         }
       }),
       2,

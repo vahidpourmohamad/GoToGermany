@@ -18,6 +18,7 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import DrawerContent from './Pages/DrawerContent.js/DrawerContent.js';
 // import MainStackNav from './Pages/MainPage/MainStackNav.js';
 import TabNavigation from './Navigation/TabNavigation.js';
+import LoadingIndicator from './Components/LoadingIndicator.js';
 // const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
 const theme = extendTheme({
@@ -101,13 +102,13 @@ export default function App() {
         const { userToken, userName } = foundUser;
         // const userToken = String(foundUser[0].userToken);
         // const userName = foundUser[0].username;
-        console.log(userName);
+        //console.log(userName);
 
         try {
           await AsyncStorage.setItem('userToken', userToken);
           await AsyncStorage.setItem('userName', userName);
         } catch (e) {
-          console.log(e);
+          //console.log(e);
         }
 
         dispatch({ type: 'LOGIN', id: userName, token: userToken });
@@ -117,7 +118,7 @@ export default function App() {
           await AsyncStorage.removeItem('userToken');
           await AsyncStorage.removeItem('userName');
         } catch (e) {
-          console.log(e);
+          //console.log(e);
         }
         dispatch({ type: 'LOGOUT' });
       },
@@ -152,11 +153,11 @@ export default function App() {
           userToken = await AsyncStorage.getItem('userToken');
           userName = await AsyncStorage.getItem('userName');
         } catch (e) {
-          console.log(e);
+          //console.log(e);
         }
-        console.log('user token: ', userName);
+        //console.log('user token: ', userName);
         dispatch({ type: 'RETRIEVE_TOKEN', token: userToken, id: userName });
-        //   console.log(loginState.userName);
+        //   //console.log(loginState.userName);
         // }, 5000);
         await new Promise((resolve) => setTimeout(resolve, 1000));
       } catch (e) {
@@ -179,11 +180,7 @@ export default function App() {
     return null;
   }
   if (loginState.isLoading) {
-    return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <ActivityIndicator size="large" />
-      </View>
-    );
+    return <LoadingIndicator/>;
   }
   return (
     <View style={{ flex: 1 }} onLayout={onLayoutRootView}>

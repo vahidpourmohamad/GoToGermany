@@ -17,7 +17,7 @@ export default function TikTok({ navigation }) {
 
   React.useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
-      console.log('Focus');
+      //console.log('Focus');
       //Every time the screen is focused the Video starts playing
       if (video) {
         video.current.playAsync();
@@ -30,7 +30,7 @@ export default function TikTok({ navigation }) {
   //Blur Event: to be fired when the HomeScreen loses focus.
   React.useEffect(() => {
     const unsubscribe = navigation.addListener('blur', () => {
-      console.log('Blur');
+      //console.log('Blur');
       //Every time the screen loses focus the Video is paused
       if (video) {
         video.current.stopAsync();
@@ -44,11 +44,11 @@ export default function TikTok({ navigation }) {
     directionalOffsetThreshold: 80,
   };
   const onSwipeRight = () => {
-    console.log('Swipe Right');
+    //console.log('Swipe Right');
     navigation.jumpTo('home');
   };
   const onSwipeLeft = () => {
-    console.log('Swipe Right');
+    //console.log('Swipe Right');
     navigation.jumpTo('book');
   };
   return (

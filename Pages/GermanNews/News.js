@@ -1,69 +1,19 @@
-import { View, Text, FlatList, StyleSheet } from 'react-native';
+import {
+  View,
+  Text,
+  FlatList,
+  StyleSheet,
+  ActivityIndicator,
+} from 'react-native';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import FeedCard from '../../Components/feedCard';
 import { Box, Center } from 'native-base';
 ('react-native-safe-area-context');
 import GestureRecognizer from 'react-native-swipe-gestures';
+import useAxiosFetchData from '../../Helper/Hooks/useAxiosFetchData';
+import LoadingIndicator from '../../Components/LoadingIndicator';
 
-const DATA = [
-  {
-    id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-    title: 'First Item',
-    text: 'lorem lorem lorem lorem lorem lorem lorem',
-    imageUri: require('../../assets/Login.png'),
-    date: 'ToDay',
-    type: 1,
-  },
-  {
-    id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-    title: 'Second Item',
-    text: 'lorem lorem lorem lorem lorem lorem lorem',
-    imageUri: require('../../assets/Login.png'),
-    date: 'ToDay',
-    type: 2,
-  },
-  {
-    id: '58694a0f-3da1-471f-bd96-145571e29d72',
-    title: 'Third Item',
-    text: 'lorem lorem lorem lorem lorem lorem lorem',
-    imageUri: require('../../assets/Login.png'),
-    date: 'ToDay',
-    type: 3,
-  },
-  {
-    id: 'bd7acbea-c1b1-42c2-aed5-3ad53abb28ba',
-    title: 'First Item',
-    text: 'lorem lorem lorem lorem lorem lorem lorem',
-    imageUri: require('../../assets/Login.png'),
-    date: 'ToDay',
-    type: 4,
-  },
-  {
-    id: '3ac68afc-c605-45d3-a4f8-fbd91aa97f63',
-    title: 'Second Item',
-    text: 'lorem lorem lorem lorem lorem lorem lorem',
-    imageUri: require('../../assets/Login.png'),
-    date: 'ToDay',
-    type: 5,
-  },
-  {
-    id: '58694a0f-3da1-371f-bd96-145571e29d72',
-    title: 'Third Item',
-    text: 'lorem lorem lorem lorem lorem lorem lorem',
-    imageUri: require('../../assets/Login.png'),
-    date: 'ToDay',
-    type: 6,
-  },
-  {
-    id: '58694a0f-3da1-471f-bd96-145551e29d72',
-    title: 'Third Item',
-    text: 'lorem lorem lorem lorem lorem lorem lorem',
-    imageUri: require('../../assets/Login.png'),
-    date: 'ToDay',
-    type: 7,
-  },
-];
 const FlatListHeader = () => {
   return (
     <View
@@ -84,19 +34,43 @@ const FlatListHeader = () => {
   );
 };
 export default function News({ navigation }) {
+  const contentDataInitialize = {
+    _id: '62d567c20706b0b9bc0b650b',
+    imageUri:
+      'https://www.holidify.com/images/cmsuploads/compressed/Bangalore_citycover_20190613234056.jpg',
+    title: 'تست',
+    authour: 'داوود',
+    mainContent: '   ',
+    type: 2,
+    creataionDate: '',
+  };
+
+  const [contentData, setContentData] = useState(contentDataInitialize);
+  const { response, loading } = useAxiosFetchData({
+    method: 'post',
+    url: '/germanContentAll',
+    headers: JSON.stringify({ accept: '*/*' }),
+  });
+  useEffect(() => {
+    // //console.log(response);
+
+    if (response !== undefined && response !== null) {
+      //console.log(response);
+
+      setContentData(response);
+    }
+  }, [response]);
   const [selectedId, setSelectedId] = useState(null);
-  console.log(navigation);
+  //console.log(navigation);
 
   const renderItem = ({ item }) => {
     return (
       <FeedCard
         item={item}
         onPress={() => {
-          // console.log('Click');
-
-          setSelectedId(item.id);
+          setSelectedId(item._id);
           navigation.navigate('germanNewsContentItem', {
-            id: 86,
+            id: item._id,
           });
         }}
       />
@@ -107,9 +81,12 @@ export default function News({ navigation }) {
     directionalOffsetThreshold: 80,
   };
   const onSwipeRight = () => {
-    // console.log('Swipe Right');
+    // //console.log('Swipe Right');
     navigation.jumpTo('videocamera');
   };
+  if (loading === true) {
+    return <LoadingIndicator />;
+  }
   return (
     <GestureRecognizer
       // onSwipe={(direction, state) => this.onSwipe(direction, state)}
@@ -132,7 +109,7 @@ export default function News({ navigation }) {
           // marginBottom={1}
           w="100%"
         >
-          <FlatListHeader></FlatListHeader>
+          <FlatListHeader />
         </Box>
         <View
           style={styles.image}
@@ -143,9 +120,9 @@ export default function News({ navigation }) {
         >
           <FlatList
             contentContainerStyle={{ flexGrow: 1 }}
-            data={DATA}
+            data={contentData}
             renderItem={renderItem}
-            keyExtractor={(item) => item.id}
+            keyExtractor={(item) => item._id}
             extraData={selectedId}
           />
         </View>

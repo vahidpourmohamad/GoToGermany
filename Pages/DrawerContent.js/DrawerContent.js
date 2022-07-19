@@ -42,7 +42,9 @@ export default function DrawerContent({ navigation }) {
           size={'lg'}
           // width="100"
           onPress={() => {
-            signOut;
+            console.log('clicked');
+
+            signOut();
           }}
         >
           خروج از حساب کاربری

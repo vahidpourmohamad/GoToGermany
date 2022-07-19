@@ -14,7 +14,7 @@ export default function AuthProvider(props) {
       await AsyncStorage.setItem('@userAvatar', userAvatar);
       await AsyncStorage.setItem('@userGender', userGender.toString());
     } catch (e) {
-      console.log(e);
+      //console.log(e);
     }
   };
 
