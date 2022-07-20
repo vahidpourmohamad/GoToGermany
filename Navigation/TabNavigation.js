@@ -1,12 +1,13 @@
 import React from 'react';
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import MainPage from '../Pages/MainPage/MainPage';
-import TikTok from '../Pages/TikTok/TikTok';
+// import MainPage from '../Pages/MainPage/MainPage';
+// import TikTok from '../Pages/TikTok/TikTok';
 
 import TabBar from './TabBar';
 import GermanNewsStackNav from './GermanNewsStackNav';
 import MainStackNav from '../Pages/MainPage/MainStackNav';
+import AllWords from '../Pages/AllWord/AllWords';
 
 const Tab = createBottomTabNavigator();
 export default function TabNavigation() {
@@ -18,9 +19,9 @@ export default function TabNavigation() {
         headerShown: false,
       }}
     >
-      <Tab.Screen name="home" component={MainStackNav} />
-      <Tab.Screen name="videocamera" component={TikTok} />
-      <Tab.Screen name="book" component={GermanNewsStackNav} />
+      <Tab.Screen name="questioncircleo" component={MainStackNav} />
+      <Tab.Screen name="book" component={AllWords} />
+      <Tab.Screen name="flag" component={GermanNewsStackNav} />
     </Tab.Navigator>
   );
 }

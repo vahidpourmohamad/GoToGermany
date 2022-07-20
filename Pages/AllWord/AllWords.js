@@ -13,6 +13,7 @@ import { Box, Center } from 'native-base';
 import GestureRecognizer from 'react-native-swipe-gestures';
 import useAxiosFetchData from '../../Helper/Hooks/useAxiosFetchData';
 import LoadingIndicator from '../../Components/LoadingIndicator';
+import WordCard from '../../Components/wordCard';
 
 const FlatListHeader = () => {
   return (
@@ -28,12 +29,12 @@ const FlatListHeader = () => {
       <Text
         style={{ fontSize: 24, color: 'black', fontFamily: 'IRANSansBold' }}
       >
-        اخبار و مطالب مربوط به آلمان
+        تمام کلمات تا سطح B2
       </Text>
     </View>
   );
 };
-export default function News({ navigation }) {
+export default function AllWords({ navigation }) {
   const contentDataInitialize = {
     _id: '62d567c20706b0b9bc0b650b',
     imageUri:
@@ -48,7 +49,7 @@ export default function News({ navigation }) {
   const [contentData, setContentData] = useState(contentDataInitialize);
   const { response, loading } = useAxiosFetchData({
     method: 'post',
-    url: '/germanContentAll',
+    url: '/WordAll',
     headers: JSON.stringify({ accept: '*/*' }),
   });
   useEffect(() => {
@@ -65,15 +66,37 @@ export default function News({ navigation }) {
 
   const renderItem = ({ item }) => {
     return (
-      <FeedCard
-        item={item}
-        onPress={() => {
-          setSelectedId(item._id);
-          navigation.navigate('germanNewsContentItem', {
-            id: item._id,
-          });
-        }}
-      />
+      //   <View
+      //     style={{
+      //       //  flex: 1,
+      //       justifyContent: 'center',
+      //       alignItems: 'center',
+      //       hight: '25%',
+      //       width: '100%',
+      //     }}
+      //     >
+      <Box
+        alignItems="center"
+        justifyContent="center"
+        marginTop="6"
+        marginBottom="6"
+        //  borderWidth={3}
+      >
+        <WordCard
+          wordGerman={item.question}
+          wordPersian={item.answer[0]}
+          plural={item.answer[1]}
+          wordGender={item.answer[2]}
+          question={item.question}
+          // onPress={() => {
+          //   setSelectedId(item._id);
+          //   navigation.navigate('germanNewsContentItem', {
+          //     id: item._id,
+          //   });
+          // }}
+        />
+      </Box>
+      //</View>
     );
   };
   const config = {
@@ -82,7 +105,11 @@ export default function News({ navigation }) {
   };
   const onSwipeRight = () => {
     // //console.log('Swipe Right');
-    navigation.jumpTo('book');
+    navigation.jumpTo('questioncircleo');
+  };
+  const onSwipeLeft = () => {
+    //console.log('Swipe Right');
+    navigation.jumpTo('flag');
   };
   if (loading === true) {
     return <LoadingIndicator />;
@@ -91,6 +118,7 @@ export default function News({ navigation }) {
     <GestureRecognizer
       // onSwipe={(direction, state) => this.onSwipe(direction, state)}
       onSwipeRight={onSwipeRight}
+      onSwipeLeft={onSwipeLeft}
       config={config}
       style={{
         flex: 1,
@@ -123,7 +151,7 @@ export default function News({ navigation }) {
             data={contentData}
             renderItem={renderItem}
             keyExtractor={(item) => item._id}
-            extraData={selectedId}
+            //    extraData={selectedId}
           />
         </View>
       </Center>

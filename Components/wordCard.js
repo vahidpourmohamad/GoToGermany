@@ -1,7 +1,7 @@
 import React from 'react';
 import { useState } from 'react';
 import { Center, Pressable } from 'native-base';
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View, Text, Dimensions } from 'react-native';
 
 import Animated, {
   useSharedValue,
@@ -12,7 +12,7 @@ import Animated, {
   withRepeat,
   // withSpring,
 } from 'react-native-reanimated';
-
+const { width, height } = Dimensions.get('window');
 function WordCard(props) {
   const [answerShow, setAnswerShow] = useState(true);
   const { wordGerman, wordPersian, plural, wordGender, question } = props;
@@ -45,12 +45,13 @@ function WordCard(props) {
       true,
     );
   };
-
+  // let wh = height * 0.42;
   return (
     <>
       <Center
         w="80%"
-        h="42%"
+        h={height * 0.4}
+        maxH="350"
         alignItems="center"
         alignContent="center"
         justifyItems="center"

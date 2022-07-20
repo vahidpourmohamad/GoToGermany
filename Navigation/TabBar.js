@@ -14,13 +14,13 @@ const TabBar = ({ state, descriptors, navigation }) => {
         const { options } = descriptors[route.key];
         let iconColor = 'gray.900';
         switch (route.name) {
-          case 'home':
+          case 'questioncircleo':
             iconColor = 'black';
             break;
-          case 'videocamera':
+          case 'book':
             iconColor = 'red.500';
             break;
-          case 'book':
+          case 'flag':
             iconColor = 'yellow.500';
             break;
           default:
